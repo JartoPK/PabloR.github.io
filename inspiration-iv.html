@@ -149,6 +149,9 @@
       .cc { padding: 22px 20px; }
     }
     @media (prefers-reduced-motion:reduce) { *,*::before,*::after{animation:none!important;transition-duration:.01ms!important} .rv{opacity:1;transform:none} }
+    .lang-toggle { display:flex; align-items:center; background:var(--bg-3); border:1px solid var(--bdr2); border-radius:8px; overflow:hidden; }
+    .lang-btn { padding:6px 11px; font-size:11px; font-weight:700; color:var(--t3); background:none; border:none; cursor:pointer; letter-spacing:.07em; font-family:'Inter',sans-serif; transition:background .2s,color .2s; }
+    .lang-btn.active { background:var(--accent); color:#fff; }
   </style>
 </head>
 <body>
@@ -158,13 +161,19 @@
     <div class="nav-inner">
       <a href="index.html" class="nav-back">
         <svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5"/></svg>
-        Back to Portfolio
+        <span data-en="Back to Portfolio" data-es="Volver al Portfolio">Back to Portfolio</span>
       </a>
       <a href="index.html" class="nav-logo">PR<em>.</em></a>
-      <a href="https://nacho-sierra.itch.io/inspiration-iv" target="_blank" rel="noopener" class="nav-ext">
-        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20M2 12h20"/></svg>
-        Play on itch.io
-      </a>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="lang-toggle">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="es">ES</button>
+        </div>
+        <a href="https://nacho-sierra.itch.io/inspiration-iv" target="_blank" rel="noopener" class="nav-ext">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20M2 12h20"/></svg>
+          Play on itch.io
+        </a>
+      </div>
     </div>
   </div>
 </nav>
@@ -179,18 +188,18 @@
   <div class="container-wide">
     <div class="hero-content">
       <div class="hero-chips">
-        <span class="chip chip-role">Level Designer</span>
-        <span class="chip chip-unreal">Unreal Engine 5</span>
+        <span class="chip chip-role" data-en="Level Designer" data-es="Diseñador de Niveles">Level Designer</span>
+        <span class="chip chip-unreal" data-en="Unreal Engine 5" data-es="Unreal Engine 5">Unreal Engine 5</span>
       </div>
       <h1 class="game-title">INSPIRATION <em>IV</em></h1>
       <p class="game-tagline">
         A <strong>space exploration adventure set on Europa</strong>, where real NASA research became the foundation for every mechanic, puzzle, and level. Designed in <strong>Unreal Engine 5</strong>, grounded in science.
       </p>
       <div class="stats-bar">
-        <div class="stat-item"><div class="stat-label">My Role</div><div class="stat-val"><em>Level Designer</em></div></div>
-        <div class="stat-item"><div class="stat-label">Engine</div><div class="stat-val">Unreal Engine 5</div></div>
-        <div class="stat-item"><div class="stat-label">Setting</div><div class="stat-val">Europa (Jupiter moon)</div></div>
-        <div class="stat-item"><div class="stat-label">Genre</div><div class="stat-val">Space Adventure</div></div>
+        <div class="stat-item"><div class="stat-label" data-en="My Role" data-es="Mi Rol">My Role</div><div class="stat-val"><em>Level Designer</em></div></div>
+        <div class="stat-item"><div class="stat-label" data-en="Engine" data-es="Motor">Engine</div><div class="stat-val">Unreal Engine 5</div></div>
+        <div class="stat-item"><div class="stat-label" data-en="Setting" data-es="Ambientación">Setting</div><div class="stat-val">Europa (Jupiter moon)</div></div>
+        <div class="stat-item"><div class="stat-label" data-en="Genre" data-es="Género">Genre</div><div class="stat-val">Space Adventure</div></div>
       </div>
     </div>
   </div>
@@ -200,8 +209,8 @@
   <div class="container">
 
     <div class="cs-section rv">
-      <div class="cs-label">Overview</div>
-      <h2 class="cs-title">Science as a Design Document</h2>
+      <div class="cs-label" data-en="Overview" data-es="Resumen">Overview</div>
+      <h2 class="cs-title" data-en="Science as a Design Document" data-es="La Ciencia como Documento de Diseño">Science as a Design Document</h2>
       <div class="cs-body">
         <p>Inspiration IV is a <strong>space exploration adventure set on Europa</strong>, one of Jupiter's moons and the most promising location in our solar system for finding extraterrestrial life. The game turns real astrophysics and astrobiology research into <strong>interactive mechanics, environmental puzzles, and traversal challenges</strong>.</p>
         <p>Rather than treat the sci-fi setting as pure aesthetics, I used <strong>NASA and ESA data on Europa's surface conditions</strong>, specifically the ice shell, tidal forces, subsurface ocean, and radiation environment, as the primary source for what the player can do, what threatens them, and what they're trying to discover.</p>
@@ -216,17 +225,17 @@
     </div>
 
     <div class="numbers-strip rv">
-      <div class="number-cell"><div class="number-big"><em>1</em></div><div class="number-desc">Real moon — all mechanics grounded in NASA data</div></div>
-      <div class="number-cell"><div class="number-big">UE<em>5</em></div><div class="number-desc">Full level built and scripted in Unreal Engine 5</div></div>
-      <div class="number-cell"><div class="number-big">3</div><div class="number-desc">Core design pillars: Explore · Survive · Discover</div></div>
-      <div class="number-cell"><div class="number-big"><em>∞</em></div><div class="number-desc">Hours of NASA/ESA research feeding the design</div></div>
+      <div class="number-cell"><div class="number-big"><em>1</em></div><div class="number-desc" data-en="Real moon — all mechanics grounded in NASA data" data-es="Luna real — todas las mecánicas basadas en datos de la NASA">Real moon — all mechanics grounded in NASA data</div></div>
+      <div class="number-cell"><div class="number-big">UE<em>5</em></div><div class="number-desc" data-en="Full level built and scripted in Unreal Engine 5" data-es="Nivel completo construido y programado en Unreal Engine 5">Full level built and scripted in Unreal Engine 5</div></div>
+      <div class="number-cell"><div class="number-big">3</div><div class="number-desc" data-en="Core design pillars: Explore · Survive · Discover" data-es="Pilares de diseño: Explorar · Sobrevivir · Descubrir">Core design pillars: Explore · Survive · Discover</div></div>
+      <div class="number-cell"><div class="number-big"><em>∞</em></div><div class="number-desc" data-en="Hours of NASA/ESA research feeding the design" data-es="Horas de investigación NASA/ESA aplicadas al diseño">Hours of NASA/ESA research feeding the design</div></div>
     </div>
 
     <hr class="divider">
 
     <div class="cs-section rv">
-      <div class="cs-label">My Work</div>
-      <h2 class="cs-title">What I Designed &amp; Built</h2>
+      <div class="cs-label" data-en="My Work" data-es="Mi Trabajo">My Work</div>
+      <h2 class="cs-title" data-en="What I Designed &amp; Built" data-es="Qué Diseñé y Construí">What I Designed &amp; Built</h2>
       <p class="cs-body" style="margin-bottom:0;">Every design decision in Inspiration IV starts with a question: <em>what would this actually feel like?</em> Here's how that question shaped each area of my contribution.</p>
 
       <div class="contrib-cards">
@@ -235,8 +244,8 @@
           <div class="cc-head">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20M2 12h20"/></svg></div>
             <div>
-              <div class="cc-title">Scientific Research → Game Mechanics</div>
-              <div class="cc-sub">Translating real science into interactive systems</div>
+              <div class="cc-title" data-en="Scientific Research → Game Mechanics" data-es="Investigación Científica → Mecánicas de Juego">Scientific Research → Game Mechanics</div>
+              <div class="cc-sub" data-en="Translating real science into interactive systems" data-es="Traduciendo ciencia real en sistemas interactivos">Translating real science into interactive systems</div>
             </div>
           </div>
           <div class="cc-body">
@@ -272,8 +281,8 @@
           <div class="cc-head">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
             <div>
-              <div class="cc-title">Level Design &amp; Blocking in Unreal Engine 5</div>
-              <div class="cc-sub">Full level pipeline — blockout to scripted gameplay space</div>
+              <div class="cc-title" data-en="Level Design &amp; Blocking in Unreal Engine 5" data-es="Diseño de Nivel y Blockout en Unreal Engine 5">Level Design &amp; Blocking in Unreal Engine 5</div>
+              <div class="cc-sub" data-en="Full level pipeline — blockout to scripted gameplay space" data-es="Pipeline completo de nivel — blockout hasta espacio de juego programado">Full level pipeline — blockout to scripted gameplay space</div>
             </div>
           </div>
           <div class="cc-body">
@@ -296,8 +305,8 @@
           <div class="cc-head">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <div>
-              <div class="cc-title">Tutorial Design — Teaching Without Interrupting</div>
-              <div class="cc-sub">Contextual, science-literate onboarding for a unique gameplay space</div>
+              <div class="cc-title" data-en="Tutorial Design — Teaching Without Interrupting" data-es="Diseño de Tutorial — Enseñar sin Interrumpir">Tutorial Design — Teaching Without Interrupting</div>
+              <div class="cc-sub" data-en="Contextual, science-literate onboarding for a unique gameplay space" data-es="Onboarding contextual y científicamente fundamentado para un espacio de juego único">Contextual, science-literate onboarding for a unique gameplay space</div>
             </div>
           </div>
           <div class="cc-body">
@@ -315,8 +324,8 @@
           <div class="cc-head">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></div>
             <div>
-              <div class="cc-title">Puzzle Design Grounded in Physics</div>
-              <div class="cc-sub">Environmental puzzles derived from real Europa properties</div>
+              <div class="cc-title" data-en="Puzzle Design Grounded in Physics" data-es="Diseño de Puzzles Basado en Física Real">Puzzle Design Grounded in Physics</div>
+              <div class="cc-sub" data-en="Environmental puzzles derived from real Europa properties" data-es="Puzzles ambientales derivados de propiedades reales de Europa">Environmental puzzles derived from real Europa properties</div>
             </div>
           </div>
           <div class="cc-body">
@@ -334,8 +343,8 @@
     </div>
 
     <div class="cs-section rv">
-      <div class="cs-label">Gallery</div>
-      <h2 class="cs-title">Screenshots &amp; Level Design</h2>
+      <div class="cs-label" data-en="Gallery" data-es="Galería">Gallery</div>
+      <h2 class="cs-title" data-en="Screenshots &amp; Level Design" data-es="Capturas y Diseño de Nivel">Screenshots &amp; Level Design</h2>
       <div class="img-grid">
         <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_Gameplay.png" alt="Gameplay"><div class="img-caption">Gameplay</div></div>
         <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_GameplayHUD.jpg" alt="Gameplay HUD"><div class="img-caption">Gameplay HUD</div></div>
@@ -351,12 +360,12 @@
   <div class="container">
     <div class="cta-row">
       <div>
-        <div class="cta-label">That's all of them —</div>
+        <div class="cta-label" data-en="That's all of them —" data-es="Eso es todo —">That's all of them —</div>
         <div class="cta-title">View Full Portfolio</div>
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
         <a href="index.html" class="btn-primary">Back to Portfolio <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
-        <a href="ghunter.html" class="btn-outline">← Start from GHUNTER</a>
+        <a href="ghunter.html" class="btn-outline" data-en="← Start from GHUNTER" data-es="← Empezar desde GHUNTER">← Start from GHUNTER</a>
       </div>
     </div>
   </div>
@@ -365,6 +374,20 @@
 <script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 50), { passive: true });
+
+  /* Language toggle */
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-en]').forEach(el => {
+        const val = el.getAttribute('data-' + lang);
+        if (val !== null) el.innerHTML = val;
+      });
+    });
+  });
+
   const ro = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }), { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
   document.querySelectorAll('.rv').forEach(el => ro.observe(el));
 </script>

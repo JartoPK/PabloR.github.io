@@ -132,6 +132,9 @@
       .cc { padding: 22px 20px; }
     }
     @media (prefers-reduced-motion:reduce) { *,*::before,*::after{animation:none!important;transition-duration:.01ms!important} .rv{opacity:1;transform:none} }
+    .lang-toggle { display:flex; align-items:center; background:var(--bg-3); border:1px solid var(--bdr2); border-radius:8px; overflow:hidden; }
+    .lang-btn { padding:6px 11px; font-size:11px; font-weight:700; color:var(--t3); background:none; border:none; cursor:pointer; letter-spacing:.07em; font-family:'Inter',sans-serif; transition:background .2s,color .2s; }
+    .lang-btn.active { background:var(--accent); color:#fff; }
   </style>
 </head>
 <body>
@@ -141,13 +144,19 @@
     <div class="nav-inner">
       <a href="index.html" class="nav-back">
         <svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5"/></svg>
-        Back to Portfolio
+        <span data-en="Back to Portfolio" data-es="Volver al Portfolio">Back to Portfolio</span>
       </a>
       <a href="index.html" class="nav-logo">PR<em>.</em></a>
-      <a href="https://store.steampowered.com/app/1861250/Antro/" target="_blank" rel="noopener" class="nav-ext">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
-        View on Steam
-      </a>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="lang-toggle">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="es">ES</button>
+        </div>
+        <a href="https://store.steampowered.com/app/1861250/Antro/" target="_blank" rel="noopener" class="nav-ext">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+          View on Steam
+        </a>
+      </div>
     </div>
   </div>
 </nav>
@@ -160,20 +169,20 @@
   <div class="container-wide">
     <div class="hero-content">
       <div class="hero-chips">
-        <span class="chip chip-role">Associate Producer</span>
-        <span class="chip chip-pub">Published by Selecta Digital</span>
-        <span class="chip chip-dev">3-Year Production — Shipped</span>
+        <span class="chip chip-role" data-en="Associate Producer" data-es="Productor Asociado">Associate Producer</span>
+        <span class="chip chip-pub" data-en="Published by Selecta Digital" data-es="Publicado por Selecta Digital">Published by Selecta Digital</span>
+        <span class="chip chip-dev" data-en="3-Year Production — Shipped" data-es="3 Años de Producción — Lanzado">3-Year Production — Shipped</span>
       </div>
       <h1 class="game-title">AN<em>TRO</em></h1>
       <p class="game-tagline">
         Journey through the underground metropolis of <strong>Antro</strong>, a 2.5D rhythm platformer where you deliver a mysterious package and spark a revolution against a totalitarian government. <strong>Published by Selecta Digital</strong> after three years of development.
       </p>
       <div class="stats-bar">
-        <div class="stat-item"><div class="stat-label">My Role</div><div class="stat-val"><em>Associate Producer</em></div></div>
-        <div class="stat-item"><div class="stat-label">Studio</div><div class="stat-val">Gatera Studio</div></div>
-        <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-val">Sep 2023 – Jan 2024</div></div>
-        <div class="stat-item"><div class="stat-label">Publisher</div><div class="stat-val">Selecta Digital</div></div>
-        <div class="stat-item"><div class="stat-label">Genre</div><div class="stat-val">Rhythm Platformer</div></div>
+        <div class="stat-item"><div class="stat-label" data-en="My Role" data-es="Mi Rol">My Role</div><div class="stat-val"><em>Associate Producer</em></div></div>
+        <div class="stat-item"><div class="stat-label" data-en="Studio" data-es="Estudio">Studio</div><div class="stat-val">Gatera Studio</div></div>
+        <div class="stat-item"><div class="stat-label" data-en="Duration" data-es="Duración">Duration</div><div class="stat-val">Sep 2023 – Jan 2024</div></div>
+        <div class="stat-item"><div class="stat-label" data-en="Publisher" data-es="Editor">Publisher</div><div class="stat-val">Selecta Digital</div></div>
+        <div class="stat-item"><div class="stat-label" data-en="Genre" data-es="Género">Genre</div><div class="stat-val">Rhythm Platformer</div></div>
       </div>
     </div>
   </div>
@@ -183,8 +192,8 @@
   <div class="container">
 
     <div class="cs-section rv">
-      <div class="cs-label">Overview</div>
-      <h2 class="cs-title">What is Antro?</h2>
+      <div class="cs-label" data-en="Overview" data-es="Resumen">Overview</div>
+      <h2 class="cs-title" data-en="What is Antro?" data-es="¿Qué es Antro?">What is Antro?</h2>
       <div class="cs-body">
         <p>Antro is a <strong>2.5D rhythm action platformer</strong> set in a stylised underground city pulsing with urban music. The player navigates layered environments, solves puzzles, and fights through a totalitarian regime, all synchronized to the beat of an original soundtrack.</p>
         <p>The project had been in active development for <strong>three years</strong> before I joined. I was brought in during the final push to <strong>close out production and ship the game</strong> through Selecta Digital, one of Spain's leading indie publishers.</p>
@@ -198,17 +207,17 @@
     </div>
 
     <div class="numbers-strip rv">
-      <div class="number-cell"><div class="number-big">10<em>+</em></div><div class="number-desc">Developers managed through final production</div></div>
-      <div class="number-cell"><div class="number-big">3</div><div class="number-desc">Years of prior development before I joined</div></div>
-      <div class="number-cell"><div class="number-big">4</div><div class="number-desc">Months to Gold from a 3-year project</div></div>
-      <div class="number-cell"><div class="number-big">1</div><div class="number-desc">Published title — Selecta Digital</div></div>
+      <div class="number-cell"><div class="number-big">10<em>+</em></div><div class="number-desc" data-en="Developers managed through final production" data-es="Desarrolladores gestionados en producción final">Developers managed through final production</div></div>
+      <div class="number-cell"><div class="number-big">3</div><div class="number-desc" data-en="Years of prior development before I joined" data-es="Años de desarrollo previo antes de unirme">Years of prior development before I joined</div></div>
+      <div class="number-cell"><div class="number-big">4</div><div class="number-desc" data-en="Months to Gold from a 3-year project" data-es="Meses hasta Gold en un proyecto de 3 años">Months to Gold from a 3-year project</div></div>
+      <div class="number-cell"><div class="number-big">1</div><div class="number-desc" data-en="Published title — Selecta Digital" data-es="Título publicado — Selecta Digital">Published title — Selecta Digital</div></div>
     </div>
 
     <hr class="divider">
 
     <div class="cs-section rv">
-      <div class="cs-label">The Context</div>
-      <h2 class="cs-title">Joining a 3-Year Project in Its Final Sprint</h2>
+      <div class="cs-label" data-en="The Context" data-es="El Contexto">The Context</div>
+      <h2 class="cs-title" data-en="Joining a 3-Year Project in Its Final Sprint" data-es="Incorporación a un Proyecto de 3 Años en su Sprint Final">Joining a 3-Year Project in Its Final Sprint</h2>
       <div class="cs-body">
         <p>
           Most producers join a project from day one. I joined Antro <strong>mid-final-sprint on a title that had been in development for three years</strong>. The team had established workflows, pre-existing dynamics, and a publisher deadline already in motion.
@@ -220,8 +229,8 @@
     </div>
 
     <div class="cs-section rv">
-      <div class="cs-label">My Work</div>
-      <h2 class="cs-title">What I Owned</h2>
+      <div class="cs-label" data-en="My Work" data-es="Mi Trabajo">My Work</div>
+      <h2 class="cs-title" data-en="What I Owned" data-es="Qué Lideré">What I Owned</h2>
 
       <div class="contrib-cards">
 
@@ -229,8 +238,8 @@
           <div class="cc-head">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
             <div>
-              <div class="cc-title">Team Leadership &amp; Integration</div>
-              <div class="cc-sub">Managing 10+ developers on a live, late-stage production</div>
+              <div class="cc-title" data-en="Team Leadership &amp; Integration" data-es="Liderazgo e Integración del Equipo">Team Leadership &amp; Integration</div>
+              <div class="cc-sub" data-en="Managing 10+ developers on a live, late-stage production" data-es="Gestionando 10+ desarrolladores en producción tardía">Managing 10+ developers on a live, late-stage production</div>
             </div>
           </div>
           <div class="cc-body">
@@ -252,8 +261,8 @@
           <div class="cc-head">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
             <div>
-              <div class="cc-title">External QA Coordination</div>
-              <div class="cc-sub">Leading all communication with the external QA company through certification</div>
+              <div class="cc-title" data-en="External QA Coordination" data-es="Coordinación de QA Externo">External QA Coordination</div>
+              <div class="cc-sub" data-en="Leading all communication with the external QA company through certification" data-es="Liderando toda la comunicación con la empresa de QA externo hasta certificación">Leading all communication with the external QA company through certification</div>
             </div>
           </div>
           <div class="cc-body">
@@ -271,8 +280,8 @@
           <div class="cc-head">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></div>
             <div>
-              <div class="cc-title">Publisher Relations &amp; External Communications</div>
-              <div class="cc-sub">Managing the studio's outbound email and publication offers</div>
+              <div class="cc-title" data-en="Publisher Relations &amp; External Communications" data-es="Relaciones con Publisher y Comunicaciones Externas">Publisher Relations &amp; External Communications</div>
+              <div class="cc-sub" data-en="Managing the studio's outbound email and publication offers" data-es="Gestionando el correo saliente del estudio y ofertas de publicación">Managing the studio's outbound email and publication offers</div>
             </div>
           </div>
           <div class="cc-body">
@@ -289,8 +298,8 @@
           <div class="cc-head">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
             <div>
-              <div class="cc-title">Production Documentation</div>
-              <div class="cc-sub">Auditing and restructuring Notion &amp; Miro for a team mid-sprint</div>
+              <div class="cc-title" data-en="Production Documentation" data-es="Documentación de Producción">Production Documentation</div>
+              <div class="cc-sub" data-en="Auditing and restructuring Notion &amp; Miro for a team mid-sprint" data-es="Auditando y reestructurando Notion y Miro para el equipo a mitad de sprint">Auditing and restructuring Notion &amp; Miro for a team mid-sprint</div>
             </div>
           </div>
           <div class="cc-body">
@@ -307,19 +316,19 @@
     </div>
 
     <div class="cs-section rv">
-      <div class="cs-label">Gallery</div>
-      <h2 class="cs-title">Screenshots &amp; Visuals</h2>
+      <div class="cs-label" data-en="Gallery" data-es="Galería">Gallery</div>
+      <h2 class="cs-title" data-en="Screenshots &amp; Visuals" data-es="Capturas y Visuales">Screenshots &amp; Visuals</h2>
       <div class="img-grid">
-        <div class="img-slot"><img src="Image/Antro/Antro_Gameplay.jpg" alt="Antro gameplay"><div class="img-caption">Rhythm combat system</div></div>
-        <div class="img-slot"><img src="Image/Antro/Antro_Gameplay2.jpg" alt="Antro environments"><div class="img-caption">2.5D platforming environments</div></div>
-        <div class="img-slot"><img src="Image/Antro/Antro_Gameplay3.jpg" alt="Antro world design"><div class="img-caption">Character &amp; world design</div></div>
-        <div class="img-slot"><img src="Image/Antro/Antro_Gameplay4.jpg" alt="Antro gameplay 4"><div class="img-caption">Underground metropolis</div></div>
+        <div class="img-slot"><img src="Image/Antro/Antro_Gameplay.jpg" alt="Antro gameplay"><div class="img-caption" data-en="Rhythm combat system" data-es="Sistema de combate rítmico">Rhythm combat system</div></div>
+        <div class="img-slot"><img src="Image/Antro/Antro_Gameplay2.jpg" alt="Antro environments"><div class="img-caption" data-en="2.5D platforming environments" data-es="Entornos de plataformas 2.5D">2.5D platforming environments</div></div>
+        <div class="img-slot"><img src="Image/Antro/Antro_Gameplay3.jpg" alt="Antro world design"><div class="img-caption" data-en="Character &amp; world design" data-es="Diseño de personajes y mundo">Character &amp; world design</div></div>
+        <div class="img-slot"><img src="Image/Antro/Antro_Gameplay4.jpg" alt="Antro gameplay 4"><div class="img-caption" data-en="Underground metropolis" data-es="Metrópolis subterránea">Underground metropolis</div></div>
       </div>
     </div>
 
     <div class="cs-section rv">
-      <div class="cs-label">Outcome</div>
-      <h2 class="cs-title">Shipped in 4 Months</h2>
+      <div class="cs-label" data-en="Outcome" data-es="Resultados">Outcome</div>
+      <h2 class="cs-title" data-en="Shipped in 4 Months" data-es="Lanzado en 4 Meses">Shipped in 4 Months</h2>
       <div class="cs-body">
         <p>Antro <strong>shipped on schedule</strong> — delivered to Gold through Selecta Digital within four months of me joining the project. A three-year development cycle closed out on time, with a 10-person team, an external QA pipeline, and a publisher relationship all running in parallel.</p>
         <p>The key lesson from this project: <strong>late-stage production management is a distinct skill</strong>. It requires fast context-switching, high trust, and the discipline to not fix things that aren't broken, while still fixing the things that are.</p>
@@ -333,12 +342,12 @@
   <div class="container">
     <div class="cta-row">
       <div>
-        <div class="cta-label">Next Project</div>
+        <div class="cta-label" data-en="Next Project" data-es="Siguiente Proyecto">Next Project</div>
         <div class="cta-title">Runeomicon →</div>
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
         <a href="runeomicon.html" class="btn-primary">View Case Study <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
-        <a href="index.html" class="btn-outline">← Back to Portfolio</a>
+        <a href="index.html" class="btn-outline" data-en="← Back to Portfolio" data-es="← Volver al Portfolio">← Back to Portfolio</a>
       </div>
     </div>
   </div>
@@ -347,6 +356,20 @@
 <script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 50), { passive: true });
+
+  /* Language toggle */
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-en]').forEach(el => {
+        const val = el.getAttribute('data-' + lang);
+        if (val !== null) el.innerHTML = val;
+      });
+    });
+  });
+
   const ro = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }), { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
   document.querySelectorAll('.rv').forEach(el => ro.observe(el));
   document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => { const t = document.querySelector(a.getAttribute('href')); if (!t) return; e.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 76, behavior: 'smooth' }); }));
