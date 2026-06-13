@@ -98,18 +98,22 @@
 
     .contrib-cards { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
     .cc { padding: 28px 32px; background: var(--bg-card); border: 1px solid var(--bdr); border-radius: 16px; transition: border-color .3s, transform .3s; }
-    .cc:hover { border-color: var(--accent-bdr); transform: translateY(-2px); }
-    .cc-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    .cc:hover { border-color: var(--accent-bdr); }
+    .cc-head { display: flex; align-items: flex-start; gap: 16px; cursor: pointer; user-select: none; }
+    .cc.open .cc-head { margin-bottom: 16px; }
+    .cc-chevron { width: 20px; height: 20px; stroke: var(--t3); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .3s; flex-shrink: 0; align-self: center; margin-left: auto; }
+    .cc.open .cc-chevron { transform: rotate(180deg); }
     .cc-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .cc-icon svg { width: 18px; height: 18px; stroke: var(--accent-lt); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .cc-title { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--t1); line-height: 1.3; }
     .cc-sub { font-size: 13px; color: var(--t3); margin-top: 3px; }
-    .cc-body { font-size: 14px; color: var(--t2); line-height: 1.7; }
+    .cc-body { display: none; font-size: 14px; color: var(--t2); line-height: 1.7; border-top: 1px solid var(--bdr); padding-top: 16px; }
+    .cc.open .cc-body { display: block; }
     .cc-body p { margin-bottom: 10px; } .cc-body p:last-child { margin-bottom: 0; }
     .cc-body strong { color: var(--t1); font-weight: 600; }
     .point-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-    .point-list li { display: flex; gap: 12px; font-size: 14px; color: var(--t2); line-height: 1.65; }
-    .point-list li::before { content: ''; display: block; flex-shrink: 0; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; margin-top: 8px; }
+    .point-list li { position: relative; padding-left: 16px; font-size: 14px; color: var(--t2); line-height: 1.65; }
+    .point-list li::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
     .point-list li strong { color: var(--t1); font-weight: 600; }
     .callout { display: flex; gap: 16px; align-items: flex-start; padding: 18px 22px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); border-radius: 12px; margin: 16px 0 0; }
     .callout svg { width: 18px; height: 18px; stroke: var(--accent-lt); fill: none; stroke-width: 1.8; stroke-linecap: round; flex-shrink: 0; margin-top: 2px; }
@@ -240,13 +244,14 @@
 
       <div class="contrib-cards">
 
-        <div class="cc rv d1">
-          <div class="cc-head">
+        <div class="cc rv d1 open">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20M2 12h20"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Scientific Research → Game Mechanics" data-es="Investigación Científica → Mecánicas de Juego">Scientific Research → Game Mechanics</div>
               <div class="cc-sub" data-en="Translating real science into interactive systems" data-es="Traduciendo ciencia real en sistemas interactivos">Translating real science into interactive systems</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>Before touching Unreal, I spent significant time researching Europa through <strong>NASA mission reports, ESA briefings, and peer-reviewed astrophysics papers</strong>. The goal: find the aspects of Europa's environment that could become compelling design constraints rather than just backdrop.</p>
@@ -278,12 +283,13 @@
         </div>
 
         <div class="cc rv d2">
-          <div class="cc-head">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Level Design &amp; Blocking in Unreal Engine 5" data-es="Diseño de Nivel y Blockout en Unreal Engine 5">Level Design &amp; Blocking in Unreal Engine 5</div>
               <div class="cc-sub" data-en="Full level pipeline — blockout to scripted gameplay space" data-es="Pipeline completo de nivel — blockout hasta espacio de juego programado">Full level pipeline — blockout to scripted gameplay space</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>I built the Europa level from the ground up in <strong>Unreal Engine 5</strong>, starting from a paper sketch and finishing with a fully blocked and scripted space.</p>
@@ -302,12 +308,13 @@
         </div>
 
         <div class="cc rv d3">
-          <div class="cc-head">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Tutorial Design — Teaching Without Interrupting" data-es="Diseño de Tutorial — Enseñar sin Interrumpir">Tutorial Design — Teaching Without Interrupting</div>
               <div class="cc-sub" data-en="Contextual, science-literate onboarding for a unique gameplay space" data-es="Onboarding contextual y científicamente fundamentado para un espacio de juego único">Contextual, science-literate onboarding for a unique gameplay space</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>Europa is not a setting players already know. The tutorial had to <strong>teach both the mechanics and the world at the same time</strong>, without breaking immersion or dumbing down the science that made the game interesting in the first place.</p>
@@ -321,12 +328,13 @@
         </div>
 
         <div class="cc rv">
-          <div class="cc-head">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Puzzle Design Grounded in Physics" data-es="Diseño de Puzzles Basado en Física Real">Puzzle Design Grounded in Physics</div>
               <div class="cc-sub" data-en="Environmental puzzles derived from real Europa properties" data-es="Puzzles ambientales derivados de propiedades reales de Europa">Environmental puzzles derived from real Europa properties</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>Rather than generic puzzle patterns, every puzzle in Inspiration IV is <strong>derived from a real property of Europa's environment</strong>, making the puzzles feel like natural extensions of the world rather than arbitrary obstacles.</p>
@@ -387,6 +395,10 @@
       });
     });
   });
+
+  function toggleCC(head) {
+    head.closest('.cc').classList.toggle('open');
+  }
 
   const ro = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }), { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
   document.querySelectorAll('.rv').forEach(el => ro.observe(el));

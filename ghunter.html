@@ -348,16 +348,15 @@
 
     .point-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
     .point-list li {
-      display: flex; gap: 12px;
+      position: relative; padding-left: 16px;
       font-size: 14px; color: var(--t2); line-height: 1.65;
     }
     .point-list li::before {
       content: '';
-      display: block; flex-shrink: 0;
+      position: absolute; left: 0; top: 8px;
       width: 5px; height: 5px;
       background: var(--accent);
       border-radius: 50%;
-      margin-top: 8px;
     }
     .point-list li strong { color: var(--t1); font-weight: 600; }
 

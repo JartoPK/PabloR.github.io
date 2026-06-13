@@ -86,18 +86,22 @@
 
     .contrib-cards { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
     .cc { padding: 28px 32px; background: var(--bg-card); border: 1px solid var(--bdr); border-radius: 16px; transition: border-color .3s, transform .3s; }
-    .cc:hover { border-color: var(--accent-bdr); transform: translateY(-2px); }
-    .cc-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    .cc:hover { border-color: var(--accent-bdr); }
+    .cc-head { display: flex; align-items: flex-start; gap: 16px; cursor: pointer; user-select: none; }
+    .cc.open .cc-head { margin-bottom: 16px; }
+    .cc-chevron { width: 20px; height: 20px; stroke: var(--t3); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .3s; flex-shrink: 0; align-self: center; margin-left: auto; }
+    .cc.open .cc-chevron { transform: rotate(180deg); }
     .cc-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .cc-icon svg { width: 18px; height: 18px; stroke: var(--accent-lt); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .cc-title { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--t1); line-height: 1.3; }
     .cc-sub { font-size: 13px; color: var(--t3); margin-top: 3px; }
-    .cc-body { font-size: 14px; color: var(--t2); line-height: 1.7; }
+    .cc-body { display: none; font-size: 14px; color: var(--t2); line-height: 1.7; border-top: 1px solid var(--bdr); padding-top: 16px; }
+    .cc.open .cc-body { display: block; }
     .cc-body p { margin-bottom: 10px; } .cc-body p:last-child { margin-bottom: 0; }
     .cc-body strong { color: var(--t1); font-weight: 600; }
     .point-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-    .point-list li { display: flex; gap: 12px; font-size: 14px; color: var(--t2); line-height: 1.65; }
-    .point-list li::before { content: ''; display: block; flex-shrink: 0; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; margin-top: 8px; }
+    .point-list li { position: relative; padding-left: 16px; font-size: 14px; color: var(--t2); line-height: 1.65; }
+    .point-list li::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
     .point-list li strong { color: var(--t1); font-weight: 600; }
     .callout { display: flex; gap: 16px; align-items: flex-start; padding: 18px 22px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); border-radius: 12px; margin: 16px 0 0; }
     .callout svg { width: 18px; height: 18px; stroke: var(--accent-lt); fill: none; stroke-width: 1.8; stroke-linecap: round; flex-shrink: 0; margin-top: 2px; }
@@ -221,13 +225,14 @@
 
       <div class="contrib-cards">
 
-        <div class="cc rv d1">
-          <div class="cc-head">
+        <div class="cc rv d1 open">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Economy Balancing via Machinations" data-es="Balanceo de Economía con Machinations">Economy Balancing via Machinations</div>
               <div class="cc-sub" data-en="Automated scoring simulation for the full tower defense economy" data-es="Simulación automatizada de puntuación para la economía completa del tower defense">Automated scoring simulation for the full tower defense economy</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>Tower defense games live or die by their economy. Too generous and the game trivialises itself; too punishing and players churn in the first wave. I used <strong>Machinations</strong> to model and automate the scoring and resource economy, making the balance testable and adjustable without having to play through each scenario manually.</p>
@@ -245,12 +250,13 @@
         </div>
 
         <div class="cc rv d2">
-          <div class="cc-head">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Full Project Documentation" data-es="Documentación Completa del Proyecto">Full Project Documentation</div>
               <div class="cc-sub" data-en="GDD, design wikis, and structured Notion workspace" data-es="GDD, wikis de diseño y espacio de trabajo estructurado en Notion">GDD, design wikis, and structured Notion workspace</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>I built the project's <strong>complete documentation framework from scratch in Notion</strong>, giving the team a single source of truth they could maintain and iterate on throughout development.</p>
@@ -263,12 +269,13 @@
         </div>
 
         <div class="cc rv d3">
-          <div class="cc-head">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Market Study &amp; Competitive Analysis" data-es="Estudio de Mercado y Análisis Competitivo">Market Study &amp; Competitive Analysis</div>
               <div class="cc-sub" data-en="Positioning the game against the tower defense genre" data-es="Posicionando el juego frente al género tower defense">Positioning the game against the tower defense genre</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>Before planning updates, I conducted a <strong>structured market study</strong>, analysing comparable titles in the tower defense space to identify where Runeomicon could differentiate and where it needed to meet genre expectations.</p>
@@ -281,12 +288,13 @@
         </div>
 
         <div class="cc rv">
-          <div class="cc-head">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Post-Launch Update Planning" data-es="Planificación de Actualizaciones Post-Lanzamiento">Post-Launch Update Planning</div>
               <div class="cc-sub" data-en="Brainstorming and designing future content mechanics" data-es="Diseñando y generando ideas para mecánicas de contenido futuro">Brainstorming and designing future content mechanics</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>Alongside the shipped build, I led <strong>collaborative brainstorming sessions</strong> to plan the game's post-launch roadmap, designing new mechanics that could extend the core rune-defense loop without requiring a full redesign.</p>
@@ -346,6 +354,10 @@
       });
     });
   });
+
+  function toggleCC(head) {
+    head.closest('.cc').classList.toggle('open');
+  }
 
   const ro = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }), { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
   document.querySelectorAll('.rv').forEach(el => ro.observe(el));

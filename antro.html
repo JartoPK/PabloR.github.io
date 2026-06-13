@@ -88,18 +88,22 @@
     /* Contribution cards — flat layout for this page */
     .contrib-cards { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
     .cc { padding: 28px 32px; background: var(--bg-card); border: 1px solid var(--bdr); border-radius: 16px; transition: border-color .3s, transform .3s; }
-    .cc:hover { border-color: var(--accent-bdr); transform: translateY(-2px); }
-    .cc-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    .cc:hover { border-color: var(--accent-bdr); }
+    .cc-head { display: flex; align-items: flex-start; gap: 16px; cursor: pointer; user-select: none; }
+    .cc.open .cc-head { margin-bottom: 16px; }
+    .cc-chevron { width: 20px; height: 20px; stroke: var(--t3); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .3s; flex-shrink: 0; align-self: center; margin-left: auto; }
+    .cc.open .cc-chevron { transform: rotate(180deg); }
     .cc-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .cc-icon svg { width: 18px; height: 18px; stroke: var(--accent-lt); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .cc-title { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--t1); line-height: 1.3; }
     .cc-sub { font-size: 13px; color: var(--t3); margin-top: 3px; }
-    .cc-body { font-size: 14px; color: var(--t2); line-height: 1.7; }
+    .cc-body { display: none; font-size: 14px; color: var(--t2); line-height: 1.7; border-top: 1px solid var(--bdr); padding-top: 16px; }
+    .cc.open .cc-body { display: block; }
     .cc-body p { margin-bottom: 10px; } .cc-body p:last-child { margin-bottom: 0; }
     .cc-body strong { color: var(--t1); font-weight: 600; }
     .point-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-    .point-list li { display: flex; gap: 12px; font-size: 14px; color: var(--t2); line-height: 1.65; }
-    .point-list li::before { content: ''; display: block; flex-shrink: 0; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; margin-top: 8px; }
+    .point-list li { position: relative; padding-left: 16px; font-size: 14px; color: var(--t2); line-height: 1.65; }
+    .point-list li::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
     .point-list li strong { color: var(--t1); font-weight: 600; }
     .callout { display: flex; gap: 16px; align-items: flex-start; padding: 18px 22px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); border-radius: 12px; margin: 16px 0 0; }
     .callout svg { width: 18px; height: 18px; stroke: var(--accent-lt); fill: none; stroke-width: 1.8; stroke-linecap: round; flex-shrink: 0; margin-top: 2px; }
@@ -234,13 +238,14 @@
 
       <div class="contrib-cards">
 
-        <div class="cc rv d1">
-          <div class="cc-head">
+        <div class="cc rv d1 open">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Team Leadership &amp; Integration" data-es="Liderazgo e Integración del Equipo">Team Leadership &amp; Integration</div>
               <div class="cc-sub" data-en="Managing 10+ developers on a live, late-stage production" data-es="Gestionando 10+ desarrolladores en producción tardía">Managing 10+ developers on a live, late-stage production</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>I stepped into a team that had been building their own way of working for three years. Rather than imposing a new system, I <strong>mapped their workflow first</strong>, spending the first days understanding their communication patterns, Notion structure, sprint cadence, and interpersonal dynamics.</p>
@@ -258,12 +263,13 @@
         </div>
 
         <div class="cc rv d2">
-          <div class="cc-head">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="External QA Coordination" data-es="Coordinación de QA Externo">External QA Coordination</div>
               <div class="cc-sub" data-en="Leading all communication with the external QA company through certification" data-es="Liderando toda la comunicación con la empresa de QA externo hasta certificación">Leading all communication with the external QA company through certification</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>I was the <strong>sole point of contact between Gatera Studio and the external QA company</strong>, managing the full bug pipeline from initial report through developer fix and final sign-off.</p>
@@ -277,12 +283,13 @@
         </div>
 
         <div class="cc rv d3">
-          <div class="cc-head">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Publisher Relations &amp; External Communications" data-es="Relaciones con Publisher y Comunicaciones Externas">Publisher Relations &amp; External Communications</div>
               <div class="cc-sub" data-en="Managing the studio's outbound email and publication offers" data-es="Gestionando el correo saliente del estudio y ofertas de publicación">Managing the studio's outbound email and publication offers</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>Beyond internal production, I handled the studio's <strong>external-facing communication</strong>, a responsibility that required discretion, clarity, and understanding of the publishing landscape.</p>
@@ -295,12 +302,13 @@
         </div>
 
         <div class="cc rv d4">
-          <div class="cc-head">
+          <div class="cc-head" onclick="toggleCC(this)">
             <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
-            <div>
+            <div style="flex:1">
               <div class="cc-title" data-en="Production Documentation" data-es="Documentación de Producción">Production Documentation</div>
               <div class="cc-sub" data-en="Auditing and restructuring Notion &amp; Miro for a team mid-sprint" data-es="Auditando y reestructurando Notion y Miro para el equipo a mitad de sprint">Auditing and restructuring Notion &amp; Miro for a team mid-sprint</div>
             </div>
+            <svg class="cc-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="cc-body">
             <p>Three years of development meant <strong>three years of accumulated documentation</strong>. I audited, restructured, and maintained the production infrastructure so the team could move fast in the final stretch without losing critical context.</p>
@@ -369,6 +377,10 @@
       });
     });
   });
+
+  function toggleCC(head) {
+    head.closest('.cc').classList.toggle('open');
+  }
 
   const ro = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }), { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
   document.querySelectorAll('.rv').forEach(el => ro.observe(el));
