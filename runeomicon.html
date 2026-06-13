@@ -207,7 +207,7 @@
         <video autoplay muted loop playsinline>
           <source src="Image/Runeomicon/gameplay.mp4" type="video/mp4">
         </video>
-        <div class="img-caption">Runeomicon — rune drawing and tower defense gameplay</div>
+        <div class="img-caption" data-en="Runeomicon — rune drawing and tower defense gameplay" data-es="Runeomicon — dibujado de runas y gameplay de tower defense">Runeomicon — rune drawing and tower defense gameplay</div>
       </div>
     </div>
 
@@ -317,10 +317,10 @@
       <div class="cs-label" data-en="Gallery" data-es="Galería">Gallery</div>
       <h2 class="cs-title" data-en="Screenshots &amp; Documentation" data-es="Capturas y Documentación">Screenshots &amp; Documentation</h2>
       <div class="img-grid">
-        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_Gameplay.jpg" alt="Gameplay"><div class="img-caption">Gameplay</div></div>
-        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_Gameplay2.jpg" alt="Rune drawing mechanic"><div class="img-caption">Rune drawing mechanic</div></div>
-        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_Gameplay3.jpg" alt="Tower defense wave gameplay"><div class="img-caption">Tower defense wave gameplay</div></div>
-        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_LevelSelector.jpg" alt="Level selector"><div class="img-caption">Level selector</div></div>
+        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_Gameplay.jpg" alt="Gameplay"><div class="img-caption" data-en="Gameplay" data-es="Gameplay">Gameplay</div></div>
+        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_Gameplay2.jpg" alt="Rune drawing mechanic"><div class="img-caption" data-en="Rune drawing mechanic" data-es="Mecánica de dibujo de runas">Rune drawing mechanic</div></div>
+        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_Gameplay3.jpg" alt="Tower defense wave gameplay"><div class="img-caption" data-en="Tower defense wave gameplay" data-es="Gameplay de oleadas tower defense">Tower defense wave gameplay</div></div>
+        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_LevelSelector.jpg" alt="Level selector"><div class="img-caption" data-en="Level selector" data-es="Selector de nivel">Level selector</div></div>
       </div>
     </div>
 
@@ -335,7 +335,7 @@
         <div class="cta-title">Inspiration IV →</div>
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <a href="inspiration-iv.html" class="btn-primary">View Case Study <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        <a href="inspiration-iv.html" class="btn-primary"><span data-en="View Case Study" data-es="Ver Caso de Estudio">View Case Study</span> <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
         <a href="index.html" class="btn-outline" data-en="← Back to Portfolio" data-es="← Volver al Portfolio">← Back to Portfolio</a>
       </div>
     </div>
@@ -347,13 +347,21 @@
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 50), { passive: true });
 
   /* Language toggle */
+  let _l = localStorage.getItem('lang') || 'en';
+  if (_l === 'es') {
+    document.querySelector('.lang-btn[data-lang="es"]').classList.add('active');
+    document.querySelector('.lang-btn[data-lang="en"]').classList.remove('active');
+    document.documentElement.lang = 'es';
+    document.querySelectorAll('[data-en]').forEach(el => { const v = el.getAttribute('data-es'); if (v !== null) el.innerHTML = v; });
+  }
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const lang = btn.dataset.lang;
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
-      document.documentElement.lang = lang;
+      _l = btn.dataset.lang;
+      localStorage.setItem('lang', _l);
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === _l));
+      document.documentElement.lang = _l;
       document.querySelectorAll('[data-en]').forEach(el => {
-        const val = el.getAttribute('data-' + lang);
+        const val = el.getAttribute('data-' + _l);
         if (val !== null) el.innerHTML = val;
       });
     });

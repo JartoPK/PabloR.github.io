@@ -226,7 +226,7 @@
         <video autoplay muted loop playsinline style="width:100%;height:auto;display:block;">
           <source src="Image/InspirationIV/trailer.mp4" type="video/mp4">
         </video>
-        <div class="img-caption">Inspiration IV — gameplay trailer</div>
+        <div class="img-caption" data-en="Inspiration IV — gameplay trailer" data-es="Inspiration IV — tráiler de gameplay">Inspiration IV — gameplay trailer</div>
       </div>
     </div>
 
@@ -262,17 +262,17 @@
             <div class="research-grid">
               <div class="research-card">
                 <div class="rc-icon">🧊</div>
-                <h4>Ice Shell Dynamics</h4>
+                <h4 data-en="Ice Shell Dynamics" data-es="Dinámica de la Corteza de Hielo">Ice Shell Dynamics</h4>
                 <p data-en="Europa's unstable ice crust informed traversal: fractures, pressure ridges, and collapse zones as natural level hazards." data-es="La inestable corteza de hielo de Europa definió el desplazamiento: fracturas, crestas de presión y zonas de colapso como peligros naturales del nivel.">Europa's unstable ice crust informed traversal: fractures, pressure ridges, and collapse zones as natural level hazards.</p>
               </div>
               <div class="research-card">
                 <div class="rc-icon">🌊</div>
-                <h4>Subsurface Ocean</h4>
+                <h4 data-en="Subsurface Ocean" data-es="Océano Subsuperficial">Subsurface Ocean</h4>
                 <p data-en="The liquid water layer below the ice became the game's central mystery, driving exploration motivation and narrative structure." data-es="La capa de agua líquida bajo el hielo se convirtió en el misterio central del juego, impulsando la motivación exploratoria y la estructura narrativa.">The liquid water layer below the ice became the game's central mystery, driving exploration motivation and narrative structure.</p>
               </div>
               <div class="research-card">
                 <div class="rc-icon">☢️</div>
-                <h4>Radiation Exposure</h4>
+                <h4 data-en="Radiation Exposure" data-es="Exposición a la Radiación">Radiation Exposure</h4>
                 <p data-en="Jupiter's radiation belt creates a survival pressure mechanic. Players must manage exposure time on the surface vs. time in shielded zones." data-es="El cinturón de radiación de Júpiter genera una mecánica de presión de supervivencia. Los jugadores deben gestionar el tiempo de exposición en la superficie frente al tiempo en zonas protegidas.">Jupiter's radiation belt creates a survival pressure mechanic. Players must manage exposure time on the surface vs. time in shielded zones.</p>
               </div>
             </div>
@@ -355,10 +355,10 @@
       <div class="cs-label" data-en="Gallery" data-es="Galería">Gallery</div>
       <h2 class="cs-title" data-en="Screenshots &amp; Level Design" data-es="Capturas y Diseño de Nivel">Screenshots &amp; Level Design</h2>
       <div class="img-grid">
-        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_Gameplay.png" alt="Gameplay"><div class="img-caption">Gameplay</div></div>
-        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_GameplayHUD.jpg" alt="Gameplay HUD"><div class="img-caption">Gameplay HUD</div></div>
-        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_Visuals.png" alt="Europa visuals"><div class="img-caption">Europa surface — visuals</div></div>
-        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_Puzle.png" alt="Puzzle design"><div class="img-caption">Puzzle design</div></div>
+        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_Gameplay.png" alt="Gameplay"><div class="img-caption" data-en="Gameplay" data-es="Gameplay">Gameplay</div></div>
+        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_GameplayHUD.jpg" alt="Gameplay HUD"><div class="img-caption" data-en="Gameplay HUD" data-es="HUD de Gameplay">Gameplay HUD</div></div>
+        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_Visuals.png" alt="Europa visuals"><div class="img-caption" data-en="Europa surface — visuals" data-es="Superficie de Europa — visuales">Europa surface — visuals</div></div>
+        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_Puzle.png" alt="Puzzle design"><div class="img-caption" data-en="Rock sample extraction puzzle" data-es="Puzle de extracción de muestra de roca">Rock sample extraction puzzle</div></div>
       </div>
     </div>
 
@@ -373,7 +373,7 @@
         <div class="cta-title">View Full Portfolio</div>
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <a href="index.html" class="btn-primary">Back to Portfolio <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        <a href="index.html" class="btn-primary"><span data-en="Back to Portfolio" data-es="Volver al Portfolio">Back to Portfolio</span> <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
         <a href="ghunter.html" class="btn-outline" data-en="← Start from GHUNTER" data-es="← Empezar desde GHUNTER">← Start from GHUNTER</a>
       </div>
     </div>
@@ -385,13 +385,21 @@
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 50), { passive: true });
 
   /* Language toggle */
+  let _l = localStorage.getItem('lang') || 'en';
+  if (_l === 'es') {
+    document.querySelector('.lang-btn[data-lang="es"]').classList.add('active');
+    document.querySelector('.lang-btn[data-lang="en"]').classList.remove('active');
+    document.documentElement.lang = 'es';
+    document.querySelectorAll('[data-en]').forEach(el => { const v = el.getAttribute('data-es'); if (v !== null) el.innerHTML = v; });
+  }
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const lang = btn.dataset.lang;
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
-      document.documentElement.lang = lang;
+      _l = btn.dataset.lang;
+      localStorage.setItem('lang', _l);
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === _l));
+      document.documentElement.lang = _l;
       document.querySelectorAll('[data-en]').forEach(el => {
-        const val = el.getAttribute('data-' + lang);
+        const val = el.getAttribute('data-' + _l);
         if (val !== null) el.innerHTML = val;
       });
     });

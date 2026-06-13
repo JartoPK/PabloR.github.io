@@ -206,7 +206,7 @@
         <video autoplay muted loop playsinline>
           <source src="Image/Antro/gameplay.mp4" type="video/mp4">
         </video>
-        <div class="img-caption">Antro — gameplay</div>
+        <div class="img-caption" data-en="Antro — gameplay" data-es="Antro — gameplay">Antro — gameplay</div>
       </div>
     </div>
 
@@ -354,7 +354,7 @@
         <div class="cta-title">Runeomicon →</div>
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <a href="runeomicon.html" class="btn-primary">View Case Study <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        <a href="runeomicon.html" class="btn-primary"><span data-en="View Case Study" data-es="Ver Caso de Estudio">View Case Study</span> <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
         <a href="index.html" class="btn-outline" data-en="← Back to Portfolio" data-es="← Volver al Portfolio">← Back to Portfolio</a>
       </div>
     </div>
@@ -366,13 +366,21 @@
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 50), { passive: true });
 
   /* Language toggle */
+  let _l = localStorage.getItem('lang') || 'en';
+  if (_l === 'es') {
+    document.querySelector('.lang-btn[data-lang="es"]').classList.add('active');
+    document.querySelector('.lang-btn[data-lang="en"]').classList.remove('active');
+    document.documentElement.lang = 'es';
+    document.querySelectorAll('[data-en]').forEach(el => { const v = el.getAttribute('data-es'); if (v !== null) el.innerHTML = v; });
+  }
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const lang = btn.dataset.lang;
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
-      document.documentElement.lang = lang;
+      _l = btn.dataset.lang;
+      localStorage.setItem('lang', _l);
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === _l));
+      document.documentElement.lang = _l;
       document.querySelectorAll('[data-en]').forEach(el => {
-        const val = el.getAttribute('data-' + lang);
+        const val = el.getAttribute('data-' + _l);
         if (val !== null) el.innerHTML = val;
       });
     });
