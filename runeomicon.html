@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Runeomicon — Game Design Case Study by Pablo Rodriguez. Economy balancing, documentation and systems design for a rune-based tower defense.">
+  <title>Runeomicon — Pablo Rodriguez</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #060612; --bg-2: #0C0C1C; --bg-3: #111124; --bg-card: #0F0F22;
+      --accent: #F59E0B; --accent-lt: #FCD34D;
+      --accent-glow: rgba(245,158,11,.1); --accent-bdr: rgba(245,158,11,.25);
+      --t1: #F2F2FA; --t2: #8888A8; --t3: #44445A;
+      --bdr: rgba(255,255,255,.065); --bdr2: rgba(255,255,255,.1);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--t1); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.65; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: .4; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .container-wide { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; transition: background .4s; }
+    nav.scrolled { background: rgba(6,6,18,.9); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); border-bottom: 1px solid var(--bdr); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .nav-back { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--t2); text-decoration: none; transition: color .25s, transform .25s; }
+    .nav-back:hover { color: var(--t1); transform: translateX(-3px); }
+    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; color: var(--t1); text-decoration: none; letter-spacing: -.4px; }
+    .nav-logo em { color: var(--accent); font-style: normal; }
+    .nav-ext { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); color: var(--accent-lt); border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; transition: background .25s, transform .2s; }
+    .nav-ext:hover { background: rgba(245,158,11,.18); transform: translateY(-1px); }
+    .nav-ext svg { width: 14px; height: 14px; fill: currentColor; }
+
+    #hero { min-height: 78vh; display: flex; align-items: flex-end; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #0A0806 0%, #160E04 35%, #0C0806 70%, #080608 100%); }
+    .hero-img-slot { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .35; }
+    .hero-vignette { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, rgba(6,6,18,.7) 40%, rgba(6,6,18,.15) 80%, rgba(6,6,18,.55) 100%); }
+    .hero-orb { position: absolute; border-radius: 50%; pointer-events: none; width: 550px; height: 550px; background: radial-gradient(circle, rgba(245,158,11,.08) 0%, transparent 68%); top: -120px; right: -80px; animation: float 9s ease-in-out infinite alternate; }
+    @keyframes float { from{transform:translate(0,0)} to{transform:translate(18px,28px)} }
+    .hero-content { position: relative; z-index: 1; padding: 120px 0 64px; width: 100%; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; opacity: 0; animation: up .6s ease .2s forwards; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .chip-role { background: var(--accent-glow); border: 1px solid var(--accent-bdr); color: var(--accent-lt); }
+    .chip-steam { background: rgba(99,179,237,.1); border: 1px solid rgba(99,179,237,.22); color: #63B3ED; }
+    .chip-intern { background: rgba(124,110,248,.12); border: 1px solid rgba(124,110,248,.25); color: #A89BFF; }
+    h1.game-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(40px, 8vw, 96px); font-weight: 700; line-height: .95; letter-spacing: -3px; color: var(--t1); margin-bottom: 20px; opacity: 0; animation: up .7s ease .35s forwards; }
+    h1.game-title em { color: transparent; -webkit-text-stroke: 1.5px rgba(242,242,250,.3); font-style: normal; }
+    .game-tagline { font-size: clamp(15px, 2vw, 18px); color: var(--t2); max-width: 580px; line-height: 1.65; margin-bottom: 40px; opacity: 0; animation: up .7s ease .5s forwards; }
+    .game-tagline strong { color: var(--t1); font-weight: 600; }
+    .stats-bar { display: flex; flex-wrap: wrap; border: 1px solid var(--bdr2); border-radius: 14px; overflow: hidden; background: rgba(6,6,18,.6); backdrop-filter: blur(12px); opacity: 0; animation: up .7s ease .65s forwards; }
+    .stat-item { flex: 1; min-width: 130px; padding: 20px 24px; border-right: 1px solid var(--bdr); }
+    .stat-item:last-child { border-right: none; }
+    .stat-label { font-size: 10px; font-weight: 700; color: var(--t3); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 6px; }
+    .stat-val { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--t1); }
+    .stat-val em { color: var(--accent-lt); font-style: normal; }
+
+    .case-body { padding: 80px 0 100px; }
+    .cs-section { margin-bottom: 72px; }
+    .cs-label { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 16px; }
+    .cs-label::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+    .cs-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(24px, 3.5vw, 34px); font-weight: 700; letter-spacing: -.8px; color: var(--t1); line-height: 1.2; margin-bottom: 20px; }
+    .cs-body { font-size: 16px; color: var(--t2); line-height: 1.8; max-width: 720px; }
+    .cs-body p { margin-bottom: 16px; } .cs-body p:last-child { margin-bottom: 0; }
+    .cs-body strong { color: var(--t1); font-weight: 600; }
+
+    .img-slot { width: 100%; border-radius: 16px; overflow: hidden; border: 1px solid var(--bdr); background: var(--bg-card); margin: 32px 0; }
+    .img-slot img { width: 100%; height: auto; display: block; transition: transform .5s; }
+    .img-slot video { width: 100%; height: auto; display: block; }
+    .img-slot:hover img { transform: scale(1.02); }
+    .img-placeholder { aspect-ratio: 16/7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--t3); font-size: 13px; background: linear-gradient(135deg, #0A0806 0%, #140E06 50%, #0A0806 100%); }
+    .img-placeholder svg { width: 32px; height: 32px; stroke: var(--t3); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+    .img-caption { padding: 12px 20px; border-top: 1px solid var(--bdr); font-size: 12px; color: var(--t3); font-style: italic; }
+    .img-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 32px 0; }
+    .img-grid .img-slot { margin: 0; }
+    .img-grid .img-placeholder { aspect-ratio: 4/3; }
+
+    .numbers-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--bdr); border: 1px solid var(--bdr); border-radius: 16px; overflow: hidden; margin: 48px 0; }
+    .number-cell { background: var(--bg-card); padding: 28px 24px; text-align: center; }
+    .number-big { font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 700; color: var(--t1); line-height: 1; margin-bottom: 6px; }
+    .number-big em { color: var(--accent); font-style: normal; }
+    .number-desc { font-size: 12px; color: var(--t3); line-height: 1.4; }
+
+    .contrib-cards { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
+    .cc { padding: 28px 32px; background: var(--bg-card); border: 1px solid var(--bdr); border-radius: 16px; transition: border-color .3s, transform .3s; }
+    .cc:hover { border-color: var(--accent-bdr); transform: translateY(-2px); }
+    .cc-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    .cc-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cc-icon svg { width: 18px; height: 18px; stroke: var(--accent-lt); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .cc-title { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--t1); line-height: 1.3; }
+    .cc-sub { font-size: 13px; color: var(--t3); margin-top: 3px; }
+    .cc-body { font-size: 14px; color: var(--t2); line-height: 1.7; }
+    .cc-body p { margin-bottom: 10px; } .cc-body p:last-child { margin-bottom: 0; }
+    .cc-body strong { color: var(--t1); font-weight: 600; }
+    .point-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .point-list li { display: flex; gap: 12px; font-size: 14px; color: var(--t2); line-height: 1.65; }
+    .point-list li::before { content: ''; display: block; flex-shrink: 0; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; margin-top: 8px; }
+    .point-list li strong { color: var(--t1); font-weight: 600; }
+    .callout { display: flex; gap: 16px; align-items: flex-start; padding: 18px 22px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); border-radius: 12px; margin: 16px 0 0; }
+    .callout svg { width: 18px; height: 18px; stroke: var(--accent-lt); fill: none; stroke-width: 1.8; stroke-linecap: round; flex-shrink: 0; margin-top: 2px; }
+    .callout-text { font-size: 14px; color: var(--t2); line-height: 1.7; }
+    .callout-text strong { color: var(--t1); font-weight: 600; }
+
+    .divider { border: none; border-top: 1px solid var(--bdr); margin: 60px 0; }
+    .case-footer { border-top: 1px solid var(--bdr); padding: 60px 0; background: var(--bg-2); }
+    .cta-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+    .cta-label { font-size: 11px; font-weight: 700; color: var(--t3); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+    .cta-title { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--t1); letter-spacing: -.5px; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; background: var(--accent); color: #000; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none; transition: background .25s, transform .25s, box-shadow .25s; }
+    .btn-primary:hover { background: var(--accent-lt); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(245,158,11,.3); }
+    .btn-primary svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .btn-outline { display: inline-flex; align-items: center; gap: 8px; padding: 14px 22px; border: 1px solid var(--bdr2); color: var(--t2); border-radius: 10px; font-size: 15px; font-weight: 500; text-decoration: none; transition: color .25s, background .25s, transform .25s; }
+    .btn-outline:hover { color: var(--t1); background: var(--bg-3); transform: translateY(-2px); }
+
+    .rv { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .rv.on { opacity: 1; transform: translateY(0); }
+    .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+    @keyframes up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+    @media (max-width:768px) {
+      .numbers-strip { grid-template-columns: repeat(2,1fr); }
+      .img-grid { grid-template-columns: 1fr; }
+      .stats-bar { flex-direction: column; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--bdr); }
+      .stat-item:last-child { border-bottom: none; }
+      .cta-row { flex-direction: column; align-items: flex-start; }
+      .cc { padding: 22px 20px; }
+    }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after{animation:none!important;transition-duration:.01ms!important} .rv{opacity:1;transform:none} }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="container-wide">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-back">
+        <svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5"/></svg>
+        Back to Portfolio
+      </a>
+      <a href="index.html" class="nav-logo">PR<em>.</em></a>
+      <a href="https://store.steampowered.com/app/3160570/Runeomicon/" target="_blank" rel="noopener" class="nav-ext">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+        View on Steam
+      </a>
+    </div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-img-slot" style="background-image:url('Image/Runeomicon/Runeomicon_Lore.jpg')"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-orb"></div>
+  <div class="container-wide">
+    <div class="hero-content">
+      <div class="hero-chips">
+        <span class="chip chip-role">Game Designer</span>
+        <span class="chip chip-steam">Published on Steam</span>
+        <span class="chip chip-intern">TLR Games Internship</span>
+      </div>
+      <h1 class="game-title">RUNE<em>OMICON</em></h1>
+      <p class="game-tagline">
+        A <strong>rune-based tower defense</strong> where a sorcerer draws ancient runes to summon a goddess of death, while villagers and believers storm the fortress to stop the ritual. <strong>Published on Steam</strong>, developed at TLR Games.
+      </p>
+      <div class="stats-bar">
+        <div class="stat-item"><div class="stat-label">My Role</div><div class="stat-val"><em>Game Designer</em></div></div>
+        <div class="stat-item"><div class="stat-label">Studio</div><div class="stat-val">TLR Games</div></div>
+        <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-val">Jul – Sep 2023</div></div>
+        <div class="stat-item"><div class="stat-label">Platform</div><div class="stat-val">PC (Steam)</div></div>
+        <div class="stat-item"><div class="stat-label">Genre</div><div class="stat-val">Tower Defense</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="case-body">
+  <div class="container">
+
+    <div class="cs-section rv">
+      <div class="cs-label">Overview</div>
+      <h2 class="cs-title">What is Runeomicon?</h2>
+      <div class="cs-body">
+        <p>Runeomicon is a <strong>tower defense game built around ritual and rune mechanics</strong>. The player character is a sorcerer drawing runes to invoke a goddess of death. The summoning draws waves of villagers and believers determined to break the ritual before completion.</p>
+        <p>Progress comes through acquiring upgrades that enhance the rituals themselves or strengthen the fortress defenses, creating a dual-track progression loop that rewards both aggressive summoning play and patient fortification strategies.</p>
+        <p>I joined the project as a <strong>Game Designer intern at TLR Games</strong>, responsible for documentation, economy balancing, and future update planning.</p>
+      </div>
+      <div class="img-slot">
+        <video autoplay muted loop playsinline>
+          <source src="Image/Runeomicon/gameplay.mp4" type="video/mp4">
+        </video>
+        <div class="img-caption">Runeomicon — rune drawing and tower defense gameplay</div>
+      </div>
+    </div>
+
+    <div class="numbers-strip rv">
+      <div class="number-cell"><div class="number-big"><em>∞</em></div><div class="number-desc">Economy system fully automated via Machinations</div></div>
+      <div class="number-cell"><div class="number-big">1</div><div class="number-desc">Complete market study with competitive analysis</div></div>
+      <div class="number-cell"><div class="number-big">3</div><div class="number-desc">Months to ship as a Game Designer intern</div></div>
+      <div class="number-cell"><div class="number-big">1</div><div class="number-desc">Published title — Steam release</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="cs-section rv">
+      <div class="cs-label">My Work</div>
+      <h2 class="cs-title">What I Designed &amp; Built</h2>
+      <p class="cs-body" style="margin-bottom:0;">I joined Runeomicon with a clear mandate: <strong>establish the design foundation</strong>: documentation, balance systems, and a roadmap for post-launch content. Here's what I delivered in three months.</p>
+
+      <div class="contrib-cards">
+
+        <div class="cc rv d1">
+          <div class="cc-head">
+            <div class="cc-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div>
+            <div>
+              <div class="cc-title">Economy Balancing via Machinations</div>
+              <div class="cc-sub">Automated scoring simulation for the full tower defense economy</div>
+            </div>
+          </div>
+          <div class="cc-body">
+            <p>Tower defense games live or die by their economy. Too generous and the game trivialises itself; too punishing and players churn in the first wave. I used <strong>Machinations</strong> to model and automate the scoring and resource economy, making the balance testable and adjustable without having to play through each scenario manually.</p>
+            <ul class="point-list">
+              <li><strong>Modelled the complete resource flow</strong>: rune generation, upgrade costs, enemy wave scaling, and fortress durability, modelled as a Machinations diagram</li>
+              <li><strong>Automated scoring simulation</strong> across multiple difficulty levels, identifying and correcting balance breaks before they reached playtesters</li>
+              <li>Iterated on upgrade cost curves to ensure both the <strong>ritual track and the fortress track</strong> remained viable throughout a full run</li>
+              <li>Documented all balance parameters and their acceptable ranges so future designers could tune without breaking the underlying model</li>
+            </ul>
+            <div class="callout">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+              <div class="callout-text"><strong>Machinations</strong> is a data-driven design tool used in professional game studios to simulate and validate economy systems before implementation — using it as an intern demonstrates initiative beyond the standard internship scope.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cc rv d2">
+          <div class="cc-head">
+            <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+            <div>
+              <div class="cc-title">Full Project Documentation</div>
+              <div class="cc-sub">GDD, design wikis, and structured Notion workspace</div>
+            </div>
+          </div>
+          <div class="cc-body">
+            <p>I built the project's <strong>complete documentation framework from scratch in Notion</strong>, giving the team a single source of truth they could maintain and iterate on throughout development.</p>
+            <ul class="point-list">
+              <li><strong>Authored the full Game Design Document (GDD)</strong>, covering mechanics, enemy types, upgrade systems, and the rune-drawing interaction model</li>
+              <li>Created <strong>design wikis</strong> for each major system, structured so engineers could implement directly from the documentation</li>
+              <li>Built a Notion workspace with clear separation between active design, archived decisions, and future update ideas</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="cc rv d3">
+          <div class="cc-head">
+            <div class="cc-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg></div>
+            <div>
+              <div class="cc-title">Market Study &amp; Competitive Analysis</div>
+              <div class="cc-sub">Positioning the game against the tower defense genre</div>
+            </div>
+          </div>
+          <div class="cc-body">
+            <p>Before planning updates, I conducted a <strong>structured market study</strong>, analysing comparable titles in the tower defense space to identify where Runeomicon could differentiate and where it needed to meet genre expectations.</p>
+            <ul class="point-list">
+              <li>Surveyed <strong>key reference titles</strong> across the tower defense genre, documenting their core loops, monetisation strategies, and player retention mechanics</li>
+              <li>Identified <strong>whitespace opportunities</strong>: areas where Runeomicon's rune-drawing mechanic offered a unique angle competitors hadn't explored</li>
+              <li>Presented findings in a structured brief used to <strong>align the team on a design direction</strong> for both the base game and post-launch updates</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="cc rv">
+          <div class="cc-head">
+            <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+            <div>
+              <div class="cc-title">Post-Launch Update Planning</div>
+              <div class="cc-sub">Brainstorming and designing future content mechanics</div>
+            </div>
+          </div>
+          <div class="cc-body">
+            <p>Alongside the shipped build, I led <strong>collaborative brainstorming sessions</strong> to plan the game's post-launch roadmap, designing new mechanics that could extend the core rune-defense loop without requiring a full redesign.</p>
+            <ul class="point-list">
+              <li>Facilitated <strong>structured brainstorming sessions</strong> with the team, generating and evaluating ideas against the game's core design pillars</li>
+              <li>Designed several <strong>candidate update mechanics</strong> with documented rationale, scope estimates, and balance considerations</li>
+              <li>Prioritised ideas based on development cost vs. player impact, producing a <strong>ranked update backlog</strong> the studio could act on post-launch</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="cs-section rv">
+      <div class="cs-label">Gallery</div>
+      <h2 class="cs-title">Screenshots &amp; Documentation</h2>
+      <div class="img-grid">
+        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_Gameplay.jpg" alt="Gameplay"><div class="img-caption">Gameplay</div></div>
+        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_Gameplay2.jpg" alt="Rune drawing mechanic"><div class="img-caption">Rune drawing mechanic</div></div>
+        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_Gameplay3.jpg" alt="Tower defense wave gameplay"><div class="img-caption">Tower defense wave gameplay</div></div>
+        <div class="img-slot"><img src="Image/Runeomicon/Runeomicon_LevelSelector.jpg" alt="Level selector"><div class="img-caption">Level selector</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="case-footer">
+  <div class="container">
+    <div class="cta-row">
+      <div>
+        <div class="cta-label">Next Project</div>
+        <div class="cta-title">Inspiration IV →</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="inspiration-iv.html" class="btn-primary">View Case Study <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        <a href="index.html" class="btn-outline">← Back to Portfolio</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 50), { passive: true });
+  const ro = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }), { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+  document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>

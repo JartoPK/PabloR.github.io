@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Inspiration IV — Game Design Case Study by Pablo Rodriguez. Level design, research-driven mechanics, and tutorial design for a space exploration adventure on Europa.">
+  <title>Inspiration IV — Pablo Rodriguez</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #060612; --bg-2: #060A12; --bg-3: #0A0F1C; --bg-card: #080E1C;
+      --accent: #38BDF8; --accent-lt: #7DD3FC;
+      --accent-glow: rgba(56,189,248,.08); --accent-bdr: rgba(56,189,248,.2);
+      --t1: #F2F2FA; --t2: #8888A8; --t3: #44445A;
+      --bdr: rgba(255,255,255,.065); --bdr2: rgba(255,255,255,.1);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--t1); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.65; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: .4; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .container-wide { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; transition: background .4s; }
+    nav.scrolled { background: rgba(6,6,18,.9); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); border-bottom: 1px solid var(--bdr); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .nav-back { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--t2); text-decoration: none; transition: color .25s, transform .25s; }
+    .nav-back:hover { color: var(--t1); transform: translateX(-3px); }
+    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; color: var(--t1); text-decoration: none; letter-spacing: -.4px; }
+    .nav-logo em { color: var(--accent); font-style: normal; }
+    .nav-ext { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); color: var(--accent-lt); border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; transition: background .25s, transform .2s; }
+    .nav-ext:hover { background: rgba(56,189,248,.15); transform: translateY(-1px); }
+    .nav-ext svg { width: 14px; height: 14px; fill: currentColor; }
+
+    #hero { min-height: 78vh; display: flex; align-items: flex-end; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #04080F 0%, #060C18 35%, #04090F 70%, #030608 100%); }
+    .hero-stars { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,.7) 1px, transparent 1px), radial-gradient(circle, rgba(255,255,255,.4) 1px, transparent 1px), radial-gradient(circle, rgba(255,255,255,.3) 1px, transparent 1px); background-size: 200px 200px, 120px 120px, 80px 80px; background-position: 0 0, 40px 60px, 100px 20px; opacity: .35; }
+    .hero-img-slot { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .35; }
+    .hero-vignette { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, rgba(6,6,18,.7) 40%, rgba(6,6,18,.1) 80%, rgba(6,6,18,.5) 100%); }
+    .hero-orb { position: absolute; border-radius: 50%; pointer-events: none; width: 600px; height: 600px; background: radial-gradient(circle, rgba(56,189,248,.07) 0%, transparent 68%); top: -150px; right: -100px; animation: float 11s ease-in-out infinite alternate; }
+    .hero-orb-2 { position: absolute; border-radius: 50%; pointer-events: none; width: 300px; height: 300px; background: radial-gradient(circle, rgba(99,102,241,.06) 0%, transparent 68%); bottom: 100px; left: -50px; animation: float 8s ease-in-out infinite alternate-reverse; }
+    @keyframes float { from{transform:translate(0,0)} to{transform:translate(18px,28px)} }
+    .hero-content { position: relative; z-index: 1; padding: 120px 0 64px; width: 100%; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; opacity: 0; animation: up .6s ease .2s forwards; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .chip-role { background: var(--accent-glow); border: 1px solid var(--accent-bdr); color: var(--accent-lt); }
+    .chip-unreal { background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.22); color: #A78BFA; }
+    .chip-uni { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.22); color: #6EE7B7; }
+    h1.game-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(40px, 8vw, 96px); font-weight: 700; line-height: .95; letter-spacing: -3px; color: var(--t1); margin-bottom: 20px; opacity: 0; animation: up .7s ease .35s forwards; }
+    h1.game-title em { color: transparent; -webkit-text-stroke: 1.5px rgba(56,189,248,.4); font-style: normal; }
+    .game-tagline { font-size: clamp(15px, 2vw, 18px); color: var(--t2); max-width: 580px; line-height: 1.65; margin-bottom: 40px; opacity: 0; animation: up .7s ease .5s forwards; }
+    .game-tagline strong { color: var(--t1); font-weight: 600; }
+    .stats-bar { display: flex; flex-wrap: wrap; border: 1px solid var(--bdr2); border-radius: 14px; overflow: hidden; background: rgba(6,6,18,.6); backdrop-filter: blur(12px); opacity: 0; animation: up .7s ease .65s forwards; }
+    .stat-item { flex: 1; min-width: 130px; padding: 20px 24px; border-right: 1px solid var(--bdr); }
+    .stat-item:last-child { border-right: none; }
+    .stat-label { font-size: 10px; font-weight: 700; color: var(--t3); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 6px; }
+    .stat-val { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--t1); }
+    .stat-val em { color: var(--accent-lt); font-style: normal; }
+
+    .case-body { padding: 80px 0 100px; }
+    .cs-section { margin-bottom: 72px; }
+    .cs-label { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 16px; }
+    .cs-label::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+    .cs-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(24px, 3.5vw, 34px); font-weight: 700; letter-spacing: -.8px; color: var(--t1); line-height: 1.2; margin-bottom: 20px; }
+    .cs-body { font-size: 16px; color: var(--t2); line-height: 1.8; max-width: 720px; }
+    .cs-body p { margin-bottom: 16px; } .cs-body p:last-child { margin-bottom: 0; }
+    .cs-body strong { color: var(--t1); font-weight: 600; }
+
+    .img-slot { width: 100%; border-radius: 16px; overflow: hidden; border: 1px solid var(--bdr); background: var(--bg-card); margin: 32px 0; }
+    .img-slot img { width: 100%; height: auto; display: block; transition: transform .5s; }
+    .img-slot video { width: 100%; height: auto; display: block; }
+    .img-slot:hover img { transform: scale(1.02); }
+    .yt-wrap { position: relative; width: 100%; aspect-ratio: 16/9; display: block; overflow: hidden; }
+    .yt-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .yt-link { position: relative; display: block; width: 100%; aspect-ratio: 16/9; overflow: hidden; text-decoration: none; background: #000; }
+    .yt-link img { width: 100%; height: 100%; object-fit: cover; opacity: .75; transition: opacity .3s; display: block; }
+    .yt-link:hover img { opacity: .55; }
+    .yt-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+    .yt-play { width: 72px; height: 72px; background: rgba(255,56,56,.92); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform .25s, background .25s; }
+    .yt-link:hover .yt-play { transform: scale(1.1); background: #ff2020; }
+    .yt-play svg { width: 28px; height: 28px; fill: #fff; margin-left: 4px; }
+    .yt-label { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: #fff; letter-spacing: .02em; opacity: .9; }
+    .img-placeholder { aspect-ratio: 16/7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--t3); font-size: 13px; background: linear-gradient(135deg, #04080F 0%, #060C18 50%, #04080F 100%); }
+    .img-placeholder svg { width: 32px; height: 32px; stroke: var(--t3); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+    .img-caption { padding: 12px 20px; border-top: 1px solid var(--bdr); font-size: 12px; color: var(--t3); font-style: italic; }
+    .img-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 32px 0; }
+    .img-grid .img-slot { margin: 0; }
+    .img-grid .img-placeholder { aspect-ratio: 4/3; }
+
+    .numbers-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--bdr); border: 1px solid var(--bdr); border-radius: 16px; overflow: hidden; margin: 48px 0; }
+    .number-cell { background: var(--bg-card); padding: 28px 24px; text-align: center; }
+    .number-big { font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 700; color: var(--t1); line-height: 1; margin-bottom: 6px; }
+    .number-big em { color: var(--accent); font-style: normal; }
+    .number-desc { font-size: 12px; color: var(--t3); line-height: 1.4; }
+
+    .contrib-cards { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
+    .cc { padding: 28px 32px; background: var(--bg-card); border: 1px solid var(--bdr); border-radius: 16px; transition: border-color .3s, transform .3s; }
+    .cc:hover { border-color: var(--accent-bdr); transform: translateY(-2px); }
+    .cc-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    .cc-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cc-icon svg { width: 18px; height: 18px; stroke: var(--accent-lt); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .cc-title { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--t1); line-height: 1.3; }
+    .cc-sub { font-size: 13px; color: var(--t3); margin-top: 3px; }
+    .cc-body { font-size: 14px; color: var(--t2); line-height: 1.7; }
+    .cc-body p { margin-bottom: 10px; } .cc-body p:last-child { margin-bottom: 0; }
+    .cc-body strong { color: var(--t1); font-weight: 600; }
+    .point-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .point-list li { display: flex; gap: 12px; font-size: 14px; color: var(--t2); line-height: 1.65; }
+    .point-list li::before { content: ''; display: block; flex-shrink: 0; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; margin-top: 8px; }
+    .point-list li strong { color: var(--t1); font-weight: 600; }
+    .callout { display: flex; gap: 16px; align-items: flex-start; padding: 18px 22px; background: var(--accent-glow); border: 1px solid var(--accent-bdr); border-radius: 12px; margin: 16px 0 0; }
+    .callout svg { width: 18px; height: 18px; stroke: var(--accent-lt); fill: none; stroke-width: 1.8; stroke-linecap: round; flex-shrink: 0; margin-top: 2px; }
+    .callout-text { font-size: 14px; color: var(--t2); line-height: 1.7; }
+    .callout-text strong { color: var(--t1); font-weight: 600; }
+
+    .research-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 24px; }
+    .research-card { padding: 20px 18px; background: rgba(56,189,248,.05); border: 1px solid var(--accent-bdr); border-radius: 12px; }
+    .research-card .rc-icon { font-size: 22px; margin-bottom: 8px; }
+    .research-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 6px; }
+    .research-card p { font-size: 12px; color: var(--t3); line-height: 1.55; }
+
+    .divider { border: none; border-top: 1px solid var(--bdr); margin: 60px 0; }
+    .case-footer { border-top: 1px solid var(--bdr); padding: 60px 0; background: var(--bg-2); }
+    .cta-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+    .cta-label { font-size: 11px; font-weight: 700; color: var(--t3); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+    .cta-title { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--t1); letter-spacing: -.5px; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; background: var(--accent); color: #000; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none; transition: background .25s, transform .25s, box-shadow .25s; }
+    .btn-primary:hover { background: var(--accent-lt); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(56,189,248,.25); }
+    .btn-primary svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .btn-outline { display: inline-flex; align-items: center; gap: 8px; padding: 14px 22px; border: 1px solid var(--bdr2); color: var(--t2); border-radius: 10px; font-size: 15px; font-weight: 500; text-decoration: none; transition: color .25s, background .25s, transform .25s; }
+    .btn-outline:hover { color: var(--t1); background: var(--bg-3); transform: translateY(-2px); }
+
+    .rv { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .rv.on { opacity: 1; transform: translateY(0); }
+    .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+    @keyframes up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+    @media (max-width:768px) {
+      .numbers-strip { grid-template-columns: repeat(2,1fr); }
+      .img-grid { grid-template-columns: 1fr; }
+      .research-grid { grid-template-columns: 1fr; }
+      .stats-bar { flex-direction: column; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--bdr); }
+      .stat-item:last-child { border-bottom: none; }
+      .cta-row { flex-direction: column; align-items: flex-start; }
+      .cc { padding: 22px 20px; }
+    }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after{animation:none!important;transition-duration:.01ms!important} .rv{opacity:1;transform:none} }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="container-wide">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-back">
+        <svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5"/></svg>
+        Back to Portfolio
+      </a>
+      <a href="index.html" class="nav-logo">PR<em>.</em></a>
+      <a href="https://nacho-sierra.itch.io/inspiration-iv" target="_blank" rel="noopener" class="nav-ext">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20M2 12h20"/></svg>
+        Play on itch.io
+      </a>
+    </div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-stars"></div>
+  <div class="hero-img-slot" style="background-image:url('Image/InspirationIV/InspirationIV_Gameplay.png')"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-orb-2"></div>
+  <div class="container-wide">
+    <div class="hero-content">
+      <div class="hero-chips">
+        <span class="chip chip-role">Level Designer</span>
+        <span class="chip chip-unreal">Unreal Engine 5</span>
+      </div>
+      <h1 class="game-title">INSPIRATION <em>IV</em></h1>
+      <p class="game-tagline">
+        A <strong>space exploration adventure set on Europa</strong>, where real NASA research became the foundation for every mechanic, puzzle, and level. Designed in <strong>Unreal Engine 5</strong>, grounded in science.
+      </p>
+      <div class="stats-bar">
+        <div class="stat-item"><div class="stat-label">My Role</div><div class="stat-val"><em>Level Designer</em></div></div>
+        <div class="stat-item"><div class="stat-label">Engine</div><div class="stat-val">Unreal Engine 5</div></div>
+        <div class="stat-item"><div class="stat-label">Setting</div><div class="stat-val">Europa (Jupiter moon)</div></div>
+        <div class="stat-item"><div class="stat-label">Genre</div><div class="stat-val">Space Adventure</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="case-body">
+  <div class="container">
+
+    <div class="cs-section rv">
+      <div class="cs-label">Overview</div>
+      <h2 class="cs-title">Science as a Design Document</h2>
+      <div class="cs-body">
+        <p>Inspiration IV is a <strong>space exploration adventure set on Europa</strong>, one of Jupiter's moons and the most promising location in our solar system for finding extraterrestrial life. The game turns real astrophysics and astrobiology research into <strong>interactive mechanics, environmental puzzles, and traversal challenges</strong>.</p>
+        <p>Rather than treat the sci-fi setting as pure aesthetics, I used <strong>NASA and ESA data on Europa's surface conditions</strong>, specifically the ice shell, tidal forces, subsurface ocean, and radiation environment, as the primary source for what the player can do, what threatens them, and what they're trying to discover.</p>
+        <p>My responsibilities covered the full level design pipeline: <strong>research, blocking, scripting, and tutorial design</strong>, all in Unreal Engine 5.</p>
+      </div>
+      <div class="img-slot">
+        <video autoplay muted loop playsinline style="width:100%;height:auto;display:block;">
+          <source src="Image/InspirationIV/trailer.mp4" type="video/mp4">
+        </video>
+        <div class="img-caption">Inspiration IV — gameplay trailer</div>
+      </div>
+    </div>
+
+    <div class="numbers-strip rv">
+      <div class="number-cell"><div class="number-big"><em>1</em></div><div class="number-desc">Real moon — all mechanics grounded in NASA data</div></div>
+      <div class="number-cell"><div class="number-big">UE<em>5</em></div><div class="number-desc">Full level built and scripted in Unreal Engine 5</div></div>
+      <div class="number-cell"><div class="number-big">3</div><div class="number-desc">Core design pillars: Explore · Survive · Discover</div></div>
+      <div class="number-cell"><div class="number-big"><em>∞</em></div><div class="number-desc">Hours of NASA/ESA research feeding the design</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="cs-section rv">
+      <div class="cs-label">My Work</div>
+      <h2 class="cs-title">What I Designed &amp; Built</h2>
+      <p class="cs-body" style="margin-bottom:0;">Every design decision in Inspiration IV starts with a question: <em>what would this actually feel like?</em> Here's how that question shaped each area of my contribution.</p>
+
+      <div class="contrib-cards">
+
+        <div class="cc rv d1">
+          <div class="cc-head">
+            <div class="cc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20M2 12h20"/></svg></div>
+            <div>
+              <div class="cc-title">Scientific Research → Game Mechanics</div>
+              <div class="cc-sub">Translating real science into interactive systems</div>
+            </div>
+          </div>
+          <div class="cc-body">
+            <p>Before touching Unreal, I spent significant time researching Europa through <strong>NASA mission reports, ESA briefings, and peer-reviewed astrophysics papers</strong>. The goal: find the aspects of Europa's environment that could become compelling design constraints rather than just backdrop.</p>
+
+            <div class="research-grid">
+              <div class="research-card">
+                <div class="rc-icon">🧊</div>
+                <h4>Ice Shell Dynamics</h4>
+                <p>Europa's unstable ice crust informed traversal: fractures, pressure ridges, and collapse zones as natural level hazards.</p>
+              </div>
+              <div class="research-card">
+                <div class="rc-icon">🌊</div>
+                <h4>Subsurface Ocean</h4>
+                <p>The liquid water layer below the ice became the game's central mystery, driving exploration motivation and narrative structure.</p>
+              </div>
+              <div class="research-card">
+                <div class="rc-icon">☢️</div>
+                <h4>Radiation Exposure</h4>
+                <p>Jupiter's radiation belt creates a survival pressure mechanic. Players must manage exposure time on the surface vs. time in shielded zones.</p>
+              </div>
+            </div>
+
+            <ul class="point-list" style="margin-top:16px;">
+              <li>Mapped research findings to <strong>design opportunities</strong>: each Europa characteristic became either a mechanic, a hazard, or a puzzle hook</li>
+              <li>Documented a <strong>science-to-design translation brief</strong> used to align the team on which real phenomena we were interpreting and how</li>
+              <li>Maintained <strong>research fidelity without sacrificing fun</strong>. Every mechanic has a real scientific basis, but the tuning prioritises player experience</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="cc rv d2">
+          <div class="cc-head">
+            <div class="cc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+            <div>
+              <div class="cc-title">Level Design &amp; Blocking in Unreal Engine 5</div>
+              <div class="cc-sub">Full level pipeline — blockout to scripted gameplay space</div>
+            </div>
+          </div>
+          <div class="cc-body">
+            <p>I built the Europa level from the ground up in <strong>Unreal Engine 5</strong>, starting from a paper sketch and finishing with a fully blocked and scripted space.</p>
+            <ul class="point-list">
+              <li><strong>Sketched the level macro structure</strong> on paper first, identifying the key beats, pacing curve, and science moments the player needed to experience</li>
+              <li>Built the <strong>initial blockout in UE5</strong> using BSP and geometry brushes, testing player movement, sight lines, and pacing before committing to visual dressing</li>
+              <li>Designed the <strong>traversal flow</strong> around Europa's specific geography: pressure ridges as natural barriers, ice plains as exploration areas, crevasses as routing puzzles</li>
+              <li>Scripted key level events using <strong>UE5 Blueprints</strong>: environmental triggers, hazard zones, and atmospheric moments tied to the subsurface ocean mystery</li>
+              <li><strong>Iterated on the layout</strong> through multiple playtests, adjusting pacing, hazard density, and discovery rhythm based on observer feedback</li>
+            </ul>
+            <div class="callout">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+              <div class="callout-text"><strong>The core loop:</strong> explore the surface → find evidence of the ocean below → navigate radiation exposure → descend to a new zone. Every section of the level reinforces this beat.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cc rv d3">
+          <div class="cc-head">
+            <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div>
+              <div class="cc-title">Tutorial Design — Teaching Without Interrupting</div>
+              <div class="cc-sub">Contextual, science-literate onboarding for a unique gameplay space</div>
+            </div>
+          </div>
+          <div class="cc-body">
+            <p>Europa is not a setting players already know. The tutorial had to <strong>teach both the mechanics and the world at the same time</strong>, without breaking immersion or dumbing down the science that made the game interesting in the first place.</p>
+            <ul class="point-list">
+              <li>Designed a <strong>contextual tutorial sequence</strong> where every mechanic is introduced through a naturally-occurring scenario rather than a UI popup. The environment teaches, not the HUD</li>
+              <li>Structured the opening section to deliver <strong>low-stakes science moments first</strong>, like touching the ice, seeing the ridges, checking the radiation meter, before high-stakes hazards appear</li>
+              <li>Built <strong>fail-safe learning zones</strong> early in the level, areas where players can encounter a hazard and recover, learning the rule without being punished by it</li>
+              <li>Tested the tutorial sequence with players who had zero context, <strong>iterating on each pain point</strong> until the experience felt discoverable rather than instructed</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="cc rv">
+          <div class="cc-head">
+            <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></div>
+            <div>
+              <div class="cc-title">Puzzle Design Grounded in Physics</div>
+              <div class="cc-sub">Environmental puzzles derived from real Europa properties</div>
+            </div>
+          </div>
+          <div class="cc-body">
+            <p>Rather than generic puzzle patterns, every puzzle in Inspiration IV is <strong>derived from a real property of Europa's environment</strong>, making the puzzles feel like natural extensions of the world rather than arbitrary obstacles.</p>
+            <ul class="point-list">
+              <li><strong>Tidal stress puzzles</strong>: the player must time movements through areas affected by Jupiter's tidal forces, using the periodic cracking of the ice as both hazard and traversal tool</li>
+              <li><strong>Thermal vent navigation</strong>: geothermal activity near the ocean creates heat gradients the player must route through, balancing warmth (survival) against dangerous proximity</li>
+              <li><strong>Ice transparency puzzles</strong>: Europa's ice in some regions is clear enough to see below; players must read the ocean below to understand what's safe to stand on above</li>
+              <li>Each puzzle was <strong>verified against the science</strong>. If a mechanic required Europa to behave in a way that contradicts known data, we redesigned the puzzle rather than bend the research</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="cs-section rv">
+      <div class="cs-label">Gallery</div>
+      <h2 class="cs-title">Screenshots &amp; Level Design</h2>
+      <div class="img-grid">
+        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_Gameplay.png" alt="Gameplay"><div class="img-caption">Gameplay</div></div>
+        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_GameplayHUD.jpg" alt="Gameplay HUD"><div class="img-caption">Gameplay HUD</div></div>
+        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_Visuals.png" alt="Europa visuals"><div class="img-caption">Europa surface — visuals</div></div>
+        <div class="img-slot"><img src="Image/InspirationIV/InspirationIV_Puzle.png" alt="Puzzle design"><div class="img-caption">Puzzle design</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="case-footer">
+  <div class="container">
+    <div class="cta-row">
+      <div>
+        <div class="cta-label">That's all of them —</div>
+        <div class="cta-title">View Full Portfolio</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="index.html" class="btn-primary">Back to Portfolio <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        <a href="ghunter.html" class="btn-outline">← Start from GHUNTER</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 50), { passive: true });
+  const ro = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }), { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+  document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>

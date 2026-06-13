@@ -1,0 +1,1382 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pablo Rodriguez — Game Designer & Producer. Portfolio of systems design, mechanics, and published titles.">
+  <title>Pablo Rodriguez — Game Designer & Producer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #060612;
+      --bg-2:        #0C0C1C;
+      --bg-3:        #111124;
+      --bg-card:     #0F0F22;
+      --accent:      #7C6EF8;
+      --accent-lt:   #A89BFF;
+      --accent-glow: rgba(124,110,248,0.13);
+      --accent-bdr:  rgba(124,110,248,0.28);
+      --t1:          #F2F2FA;
+      --t2:          #8888A8;
+      --t3:          #44445A;
+      --bdr:         rgba(255,255,255,0.065);
+      --bdr2:        rgba(255,255,255,0.1);
+      --r:           12px;
+      --r-lg:        20px;
+      --ease:        cubic-bezier(.4,0,.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--t1);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle noise */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .45;
+    }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 200;
+      transition: background .4s var(--ease), border-color .4s var(--ease);
+    }
+    nav.scrolled {
+      background: rgba(6,6,18,.88);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-bottom: 1px solid var(--bdr);
+    }
+    .nav-inner {
+      display: flex; align-items: center;
+      justify-content: space-between; height: 68px;
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 18px;
+      color: var(--t1); text-decoration: none;
+      letter-spacing: -.5px;
+    }
+    .nav-logo em { color: var(--accent); font-style: normal; }
+
+    .nav-links {
+      display: flex; align-items: center;
+      gap: 30px; list-style: none;
+    }
+    .nav-links a {
+      color: var(--t2); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--t1); }
+
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+
+    .lang-toggle {
+      display: flex; align-items: center;
+      background: var(--bg-3);
+      border: 1px solid var(--bdr2);
+      border-radius: 8px; overflow: hidden;
+    }
+    .lang-btn {
+      padding: 6px 11px; font-size: 11px;
+      font-weight: 700; color: var(--t3);
+      background: none; border: none;
+      cursor: pointer; letter-spacing: .07em;
+      font-family: 'Inter', sans-serif;
+      transition: background .2s, color .2s;
+    }
+    .lang-btn.active { background: var(--accent); color: #fff; }
+
+    .btn-hire {
+      padding: 9px 20px;
+      background: var(--accent); color: #fff;
+      border-radius: 9px; font-size: 14px;
+      font-weight: 600; text-decoration: none;
+      transition: background .25s, transform .2s;
+    }
+    .btn-hire:hover { background: var(--accent-lt); transform: translateY(-1px); }
+
+    .hamburger {
+      display: none; flex-direction: column;
+      gap: 5px; background: none;
+      border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--t1); border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── HERO ── */
+    #hero {
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .orb { position: absolute; border-radius: 50%; pointer-events: none; will-change: transform; }
+    .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(124,110,248,.11) 0%, transparent 68%); top: -160px; right: -120px; animation: float 8s ease-in-out infinite alternate; }
+    .orb-2 { width: 480px; height: 480px; background: radial-gradient(circle, rgba(168,155,255,.07) 0%, transparent 70%); bottom: -80px; left: -100px; animation: float 10s ease-in-out 2s infinite alternate-reverse; }
+    @keyframes float { from{transform:translate(0,0) scale(1)} to{transform:translate(20px,30px) scale(1.04)} }
+
+    .hero-content { position: relative; z-index: 1; width: 100%; padding: 8px 0 40px; }
+
+    /* TOP: centered name */
+    .hero-top {
+      text-align: center; margin-bottom: 28px;
+      opacity: 0; animation: up .7s var(--ease) .15s forwards;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px;
+      background: var(--accent-glow); border: 1px solid var(--accent-bdr);
+      border-radius: 100px; font-size: 12px; font-weight: 600; color: var(--accent-lt);
+      letter-spacing: .06em; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: blink-dot 2s infinite; }
+    @keyframes blink-dot { 0%,100%{opacity:1} 50%{opacity:.35} }
+    h1.hero-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(48px, 8vw, 88px);
+      font-weight: 700; line-height: 1; letter-spacing: -3px; color: var(--t1); margin-bottom: 16px;
+    }
+    .hero-role-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; }
+    #hero-role { font-family: 'Space Grotesk', sans-serif; font-size: clamp(16px, 2.5vw, 22px); font-weight: 500; color: var(--accent-lt); min-height: 28px; }
+    .cursor-blink { display: inline-block; width: 2px; height: .9em; background: var(--accent); margin-left: 2px; vertical-align: middle; animation: cursor 1s step-end infinite; }
+    @keyframes cursor { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* MIDDLE: 3-column */
+    .hero-mid {
+      display: grid;
+      grid-template-columns: 1fr 280px 1fr;
+      gap: 64px; align-items: center;
+    }
+
+    /* Left column */
+    .hero-left {
+      display: flex; flex-direction: column; gap: 28px;
+      opacity: 0; animation: up .7s var(--ease) .5s forwards;
+    }
+    .hero-info-label {
+      font-size: 9px; font-weight: 700; color: var(--t3);
+      letter-spacing: .18em; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .hero-desc { font-size: 15px; color: var(--t2); line-height: 1.75; }
+    .hero-meta { display: flex; flex-direction: column; gap: 7px; }
+    .hero-meta-item { display: flex; align-items: center; gap: 9px; font-size: 14px; color: var(--t2); }
+    .hero-meta-item svg { width: 14px; height: 14px; stroke: var(--t3); fill: none; stroke-width: 1.8; stroke-linecap: round; flex-shrink: 0; }
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; background: var(--accent); color: #fff; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background .25s, transform .25s, box-shadow .25s; }
+    .btn-primary:hover { background: var(--accent-lt); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(124,110,248,.35); }
+    .btn-outline { display: inline-flex; align-items: center; gap: 8px; padding: 13px 20px; border: 1px solid var(--bdr2); color: var(--t2); border-radius: 10px; font-size: 14px; font-weight: 500; text-decoration: none; transition: color .25s, border-color .25s, background .25s, transform .25s; }
+    .btn-outline:hover { color: var(--t1); background: var(--bg-3); border-color: var(--bdr2); transform: translateY(-2px); }
+
+    /* Center: oval photo */
+    .hero-photo-wrap { display: flex; justify-content: center; opacity: 0; animation: up .9s var(--ease) .3s forwards; }
+    .hero-photo-oval {
+      width: 280px; height: 380px;
+      border-radius: 999px; overflow: hidden;
+      border: 1px solid var(--bdr2);
+      box-shadow: 0 0 0 8px rgba(124,110,248,.06), 0 32px 80px rgba(0,0,0,.55);
+    }
+    .hero-photo-oval img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+
+    /* Right column: stats */
+    .hero-right {
+      display: flex; flex-direction: column; gap: 30px;
+      opacity: 0; animation: up .7s var(--ease) .5s forwards;
+    }
+    .hero-stat .hs-label { font-size: 9px; font-weight: 700; color: var(--t3); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 4px; }
+    .hero-stat .hs-num { font-family: 'Space Grotesk', sans-serif; font-size: 52px; font-weight: 700; color: var(--t1); line-height: 1; }
+    .hero-stat .hs-num em { color: var(--accent); font-style: normal; }
+
+    /* Scroll cue */
+    .scroll-cue { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; animation: fade 1s var(--ease) 1.6s forwards; }
+    .scroll-cue span { font-size: 10px; color: var(--t3); letter-spacing: .15em; text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--accent), transparent); animation: drip 2s ease-in-out infinite; }
+    @keyframes drip { 0%{transform:scaleY(0);transform-origin:top} 49%{transform:scaleY(1);transform-origin:top} 50%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
+
+    /* ── SECTION BASICS ── */
+    section { padding: 104px 0; }
+    .sec-label {
+      display: inline-flex; align-items: center;
+      gap: 10px; font-size: 11px; font-weight: 700;
+      color: var(--accent); letter-spacing: .16em;
+      text-transform: uppercase; margin-bottom: 14px;
+    }
+    .sec-label::before {
+      content: ''; width: 18px; height: 1px;
+      background: var(--accent);
+    }
+    .sec-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700; letter-spacing: -1px;
+      line-height: 1.15; color: var(--t1);
+      margin-bottom: 14px;
+    }
+    .sec-desc {
+      font-size: 16px; color: var(--t2);
+      max-width: 500px; line-height: 1.75;
+    }
+
+    /* Scroll reveal */
+    .rv {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .rv.on { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: .08s; }
+    .d2 { transition-delay: .16s; }
+    .d3 { transition-delay: .24s; }
+    .d4 { transition-delay: .32s; }
+    .d5 { transition-delay: .40s; }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg-2); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .about-text p {
+      color: var(--t2); font-size: 16px;
+      line-height: 1.8; margin-bottom: 18px;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-text strong { color: var(--t1); font-weight: 600; }
+
+    .skill-groups { display: flex; flex-direction: column; gap: 22px; }
+    .sg-title {
+      font-size: 10px; font-weight: 700; color: var(--t3);
+      letter-spacing: .14em; text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      padding: 6px 14px;
+      background: var(--bg-3);
+      border: 1px solid var(--bdr);
+      border-radius: 100px; font-size: 13px;
+      font-weight: 500; color: var(--t2);
+      transition: border-color .25s, color .25s, background .25s;
+    }
+    .tag:hover {
+      border-color: var(--accent-bdr);
+      color: var(--accent-lt);
+      background: var(--accent-glow);
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--bg); }
+    .proj-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 56px;
+    }
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .proj-grid .proj:first-child { grid-column: 1 / -1; }
+
+    .proj {
+      display: block; text-decoration: none;
+      background: var(--bg-card);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      transition: border-color .3s, transform .35s var(--ease), box-shadow .35s;
+    }
+    .proj:hover {
+      border-color: var(--accent-bdr);
+      transform: translateY(-5px);
+      box-shadow: 0 24px 64px rgba(0,0,0,.35), 0 0 0 1px var(--accent-bdr);
+    }
+
+    .proj-img {
+      width: 100%; aspect-ratio: 16/7;
+      position: relative; overflow: hidden;
+    }
+    .proj:first-child .proj-img { aspect-ratio: 16/6; }
+
+    /* Gradient placeholders */
+    .g-ghunter    { background: linear-gradient(135deg,#080E08 0%,#14240A 40%,#081008 100%); }
+    .g-runeomicon { background: linear-gradient(135deg,#0D0815 0%,#1A0B2E 50%,#0A0610 100%); }
+    .g-antro      { background: linear-gradient(135deg,#150810 0%,#2B0D20 50%,#100820 100%); }
+    .g-inspiration{ background: linear-gradient(135deg,#060812 0%,#0C1428 50%,#030509 100%); }
+
+    .proj-img-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center;
+      justify-content: center;
+    }
+    .proj-img-inner img,
+    .proj-img-inner svg {
+      transition: filter .4s ease;
+    }
+    .proj:hover .proj-img-inner img,
+    .proj:hover .proj-img-inner svg { filter: brightness(1.15); }
+
+    .proj-icon { opacity: .18; }
+    .proj-fade {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top,rgba(15,15,34,.92) 0%,rgba(15,15,34,.15) 60%,transparent 100%);
+    }
+
+    .proj-body { padding: 22px 24px 24px; }
+    .proj-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+
+    .badge {
+      padding: 4px 10px; border-radius: 100px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .b-design  { background:rgba(124,110,248,.14); color:#A89BFF; border:1px solid rgba(124,110,248,.25); }
+    .b-produce { background:rgba(72,187,120,.11);  color:#68D391; border:1px solid rgba(72,187,120,.22); }
+    .b-award   { background:rgba(246,173,85,.11);  color:#F6AD55; border:1px solid rgba(246,173,85,.22); }
+    .b-steam   { background:rgba(99,179,237,.11);  color:#63B3ED; border:1px solid rgba(99,179,237,.22); }
+
+    .proj-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--t1); letter-spacing: -.3px;
+      margin-bottom: 8px;
+    }
+    .proj:first-child .proj-title { font-size: 24px; }
+
+    .proj-desc {
+      font-size: 14px; color: var(--t2);
+      line-height: 1.65; margin-bottom: 18px;
+    }
+    .proj-foot {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding-top: 16px; border-top: 1px solid var(--bdr);
+    }
+    .proj-co { font-size: 13px; color: var(--t3); font-weight: 500; }
+    .proj-arrow {
+      width: 32px; height: 32px;
+      background: var(--bg-3);
+      border: 1px solid var(--bdr);
+      border-radius: 8px;
+      display: flex; align-items: center;
+      justify-content: center;
+      transition: background .25s, border-color .25s;
+    }
+    .proj:hover .proj-arrow {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .proj-arrow svg {
+      width: 14px; height: 14px;
+      stroke: var(--t2);
+      transition: stroke .25s;
+    }
+    .proj:hover .proj-arrow svg { stroke: #fff; }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--bg-2); }
+    .exp-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 80px; align-items: start;
+    }
+    .exp-sticky { position: sticky; top: 100px; }
+
+    .timeline { display: flex; flex-direction: column; }
+    .tl-item { display: flex; gap: 22px; padding-bottom: 40px; }
+    .tl-item:last-child { padding-bottom: 0; }
+
+    .tl-spine {
+      display: flex; flex-direction: column;
+      align-items: center; flex-shrink: 0; width: 18px;
+    }
+    .tl-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%; background: var(--accent);
+      border: 2px solid var(--bg-2);
+      box-shadow: 0 0 0 3px rgba(124,110,248,.22);
+      margin-top: 5px; flex-shrink: 0;
+    }
+    .tl-line {
+      width: 1px; flex: 1;
+      background: linear-gradient(to bottom, var(--accent-bdr), transparent);
+      margin-top: 6px;
+    }
+    .tl-item:last-child .tl-line { display: none; }
+
+    .tl-body { flex: 1; }
+    .tl-period {
+      font-size: 12px; color: var(--t3);
+      font-weight: 600; letter-spacing: .05em;
+      margin-bottom: 5px;
+    }
+    .tl-role {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px; font-weight: 600;
+      color: var(--t1); margin-bottom: 2px;
+    }
+    .tl-company {
+      font-size: 14px; color: var(--accent-lt);
+      font-weight: 500; margin-bottom: 6px;
+    }
+    .tl-game {
+      font-size: 13px; color: var(--t3);
+      font-style: italic; margin-bottom: 12px;
+    }
+    .tl-bullets { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .tl-bullets li {
+      font-size: 14px; color: var(--t2);
+      line-height: 1.65; padding-left: 16px;
+      position: relative;
+    }
+    .tl-bullets li::before {
+      content: ''; position: absolute;
+      left: 0; top: 10px;
+      width: 6px; height: 1px;
+      background: var(--accent);
+    }
+
+    /* ── ACHIEVEMENTS ── */
+    #achievements { background: var(--bg); }
+    .ach-header { text-align: center; margin-bottom: 56px; }
+    .ach-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .ach-card {
+      padding: 30px;
+      background: var(--bg-card);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r-lg);
+      transition: border-color .3s, transform .3s, background .3s;
+    }
+    .ach-card:hover {
+      border-color: var(--accent-bdr);
+      background: var(--bg-3);
+      transform: translateY(-4px);
+    }
+    .ach-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent-bdr);
+      display: flex; align-items: center;
+      justify-content: center; margin-bottom: 20px;
+    }
+    .ach-icon svg {
+      width: 20px; height: 20px;
+      stroke: var(--accent-lt);
+      fill: none; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .ach-year {
+      font-size: 11px; font-weight: 700;
+      color: var(--accent); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .ach-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px; font-weight: 600;
+      color: var(--t1); margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .ach-desc { font-size: 14px; color: var(--t2); line-height: 1.65; }
+
+    /* ── EDUCATION ── */
+    #education { background: var(--bg-2); padding: 80px 0; }
+    .edu-grid {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 18px; margin-top: 48px;
+    }
+    .edu-card {
+      padding: 32px; background: var(--bg-3);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r-lg);
+      transition: border-color .3s;
+    }
+    .edu-card:hover { border-color: var(--accent-bdr); }
+    .edu-type {
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .edu-degree {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 21px; font-weight: 700;
+      color: var(--t1); margin-bottom: 8px;
+      letter-spacing: -.3px; line-height: 1.25;
+    }
+    .edu-inst { font-size: 15px; color: var(--accent-lt); font-weight: 500; margin-bottom: 6px; }
+    .edu-period { font-size: 13px; color: var(--t3); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); text-align: center; }
+    .contact-inner { max-width: 580px; margin: 0 auto; }
+    .contact-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 700; letter-spacing: -2px;
+      color: var(--t1); line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .contact-title .hi { color: var(--accent); }
+    .contact-desc {
+      font-size: 17px; color: var(--t2);
+      line-height: 1.75; margin-bottom: 40px;
+    }
+    .contact-links {
+      display: flex; justify-content: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .c-link {
+      display: inline-flex; align-items: center;
+      gap: 8px; padding: 12px 20px;
+      border: 1px solid var(--bdr2);
+      border-radius: 10px; font-size: 14px;
+      font-weight: 500; color: var(--t2);
+      text-decoration: none;
+      background: var(--bg-card);
+      transition: color .25s, border-color .25s, background .25s, transform .25s;
+    }
+    .c-link:hover {
+      color: var(--t1);
+      border-color: var(--accent-bdr);
+      background: var(--accent-glow);
+      transform: translateY(-2px);
+    }
+    .c-link svg {
+      width: 16px; height: 16px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2; stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 26px 0;
+      border-top: 1px solid var(--bdr);
+    }
+    .foot-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .foot-txt { font-size: 13px; color: var(--t3); }
+    .foot-txt em { color: var(--accent); font-style: normal; }
+
+    /* ── KEYFRAMES ── */
+    @keyframes up {
+      from { opacity:0; transform:translateY(22px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fade {
+      from { opacity:0; } to { opacity:1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .about-grid { gap: 50px; }
+      .exp-layout { grid-template-columns: 1fr; gap: 40px; }
+      .exp-sticky { position: static; }
+    }
+    @media (max-width: 1024px) {
+      .hero-mid { grid-template-columns: 1fr; gap: 40px; }
+      .hero-photo-wrap { order: -1; }
+      .hero-photo-oval { width: 200px; height: 270px; }
+      .hero-left { align-items: center; text-align: center; }
+      .hero-meta-item { justify-content: center; }
+      .hero-btns { justify-content: center; }
+      .hero-right { flex-direction: row; flex-wrap: wrap; gap: 28px 48px; justify-content: center; }
+      .hero-stat { text-align: center; }
+      .hero-stat .hs-num { font-size: 40px; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 72px 0; }
+      .nav-links {
+        display: none; flex-direction: column;
+        position: fixed; top: 68px; left: 0; right: 0;
+        background: rgba(6,6,18,.96);
+        backdrop-filter: blur(22px);
+        padding: 24px; gap: 20px;
+        border-bottom: 1px solid var(--bdr);
+      }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .btn-hire { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .proj-grid { grid-template-columns: 1fr; }
+      .proj-grid .proj:first-child { grid-column: 1; }
+      .ach-grid { grid-template-columns: 1fr; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; }
+      .proj-header { flex-direction: column; align-items: flex-start; gap: 18px; }
+      .foot-inner { flex-direction: column; gap: 10px; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      h1.hero-name { letter-spacing: -2px; }
+      .hero-btns { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-outline { justify-content: center; }
+      .contact-links { flex-direction: column; align-items: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+      .rv { opacity:1; transform:none; }
+    }
+
+    /* ── OTHER PROJECTS ── */
+    .b-jam      { background:rgba(251,146,60,.12); color:#FB923C; border:1px solid rgba(251,146,60,.25); }
+    .b-board    { background:rgba(52,211,153,.1);  color:#34D399; border:1px solid rgba(52,211,153,.22); }
+    .b-template { background:rgba(99,179,237,.11); color:#63B3ED; border:1px solid rgba(99,179,237,.22); }
+    .sp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; }
+    .sp-card { background:var(--card); border:1px solid var(--bdr); border-radius:16px; padding:24px; display:flex; flex-direction:column; gap:12px; transition:border-color .3s, transform .3s; }
+    .sp-card:hover { border-color:var(--accent-bdr); transform:translateY(-2px); }
+    .sp-card-badges { display:flex; flex-wrap:wrap; gap:6px; }
+    .sp-card-title { font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:700; color:var(--t1); letter-spacing:-.3px; }
+    .sp-card-meta { font-size:12px; color:var(--t3); display:flex; flex-direction:column; gap:2px; }
+    .sp-card-desc { font-size:13px; color:var(--t2); line-height:1.65; }
+    .sp-list { list-style:none; display:flex; flex-direction:column; gap:6px; padding-top:4px; border-top:1px solid var(--bdr); }
+    .sp-list li { display:flex; gap:10px; font-size:12px; color:var(--t2); line-height:1.55; }
+    .sp-list li::before { content:''; display:block; flex-shrink:0; width:4px; height:4px; background:var(--accent); border-radius:50%; margin-top:6px; }
+    .sp-award { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:#F6AD55; letter-spacing:.04em; }
+    @media (max-width:900px) { .sp-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:560px) { .sp-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">PR<em>.</em></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#projects"    data-en="Projects"     data-es="Proyectos">Projects</a></li>
+        <li><a href="#experience"  data-en="Experience"   data-es="Experiencia">Experience</a></li>
+        <li><a href="#achievements"data-en="Achievements" data-es="Logros">Achievements</a></li>
+        <li><a href="#about"       data-en="About"        data-es="Sobre mí">About</a></li>
+        <li><a href="#contact"     data-en="Contact"      data-es="Contacto">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-toggle">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn"        data-lang="es">ES</button>
+        </div>
+        <a href="mailto:pablorodriguezp3@gmail.com" class="btn-hire"
+           data-en="Hire Me" data-es="Contrátame">Hire Me</a>
+        <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="container">
+    <div class="hero-content">
+
+      <!-- Top: name centrado -->
+      <div class="hero-top">
+        <div class="hero-badge">
+          <span data-en="Open to opportunities worldwide" data-es="Abierto a oportunidades en todo el mundo">Open to opportunities worldwide</span>
+        </div>
+        <h1 class="hero-name">Pablo Rodriguez</h1>
+        <div class="hero-role-wrap">
+          <div id="hero-role">Game Designer<span class="cursor-blink"></span></div>
+        </div>
+      </div>
+
+      <!-- Middle: 3 columnas -->
+      <div class="hero-mid">
+
+        <!-- Izquierda: bio + contacto + botones -->
+        <div class="hero-left">
+          <div>
+            <div class="hero-info-label" data-en="Biography" data-es="Biografía">Biography</div>
+            <p class="hero-desc"
+               data-en="Game Designer &amp; Producer with 5+ years in systems design, economy balancing, and player progression. Shipped titles with Selecta Digital, won Best Student Game at BIG Conference 2024."
+               data-es="Game Designer y Producer con más de 5 años en diseño de sistemas, balanceo de economía y progresión. Títulos publicados con Selecta Digital, ganador del Mejor Juego Estudiantil en BIG 2024.">
+              Game Designer &amp; Producer with 5+ years in systems design, economy balancing, and player progression. Shipped titles with Selecta Digital, won Best Student Game at BIG Conference 2024.
+            </p>
+          </div>
+          <div>
+            <div class="hero-info-label" data-en="Contact" data-es="Contacto">Contact</div>
+            <div class="hero-meta">
+              <div class="hero-meta-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span data-en="Willing to relocate worldwide" data-es="Disponible para reubicación mundial">Willing to relocate worldwide</span>
+              </div>
+              <div class="hero-meta-item">
+                <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+                pablorodriguezp3@gmail.com
+              </div>
+            </div>
+          </div>
+          <div class="hero-btns">
+            <a href="#projects" class="btn-primary" data-en="View Projects" data-es="Ver Proyectos">
+              View Projects
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+            <a href="mailto:pablorodriguezp3@gmail.com" class="btn-outline" data-en="Get in Touch" data-es="Escribir">Get in Touch</a>
+          </div>
+        </div>
+
+        <!-- Centro: foto oval -->
+        <div class="hero-photo-wrap">
+          <div class="hero-photo-oval">
+            <img src="Image/FotoPerfil.JPG" alt="Pablo Rodriguez — Game Designer & Producer">
+          </div>
+        </div>
+
+        <!-- Derecha: estadísticas -->
+        <div class="hero-right">
+          <div class="hero-stat">
+            <div class="hs-label" data-en="Years of Experience" data-es="Años de Experiencia">Years of Experience</div>
+            <div class="hs-num">5<em>+</em></div>
+          </div>
+          <div class="hero-stat">
+            <div class="hs-label" data-en="Games Shipped" data-es="Juegos Lanzados">Games Shipped</div>
+            <div class="hs-num">5</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hs-label" data-en="Industry Awards" data-es="Premios">Industry Awards</div>
+            <div class="hs-num">3</div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <span data-en="scroll" data-es="scroll">scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══ SHOWREEL ═══ -->
+<section id="showreel" style="padding: 80px 0 0;">
+  <div class="container">
+    <div class="rv" style="text-align:center; margin-bottom:32px;">
+      <div class="sec-label" data-en="Showreel" data-es="Showreel" style="justify-content:center;">Showreel</div>
+      <h2 class="sec-title" data-en="A look at my work" data-es="Un vistazo a mi trabajo">A look at my work</h2>
+    </div>
+    <div class="rv" style="border-radius:16px; overflow:hidden; border:1px solid var(--bdr); box-shadow:0 24px 64px rgba(0,0,0,.4);">
+      <video controls style="width:100%;height:auto;display:block;">
+        <source src="Image/showreel.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECTS ═══ -->
+<section id="projects">
+  <div class="container">
+    <div class="proj-header rv">
+      <div>
+        <div class="sec-label" data-en="Selected Work" data-es="Trabajos Destacados">Selected Work</div>
+        <h2 class="sec-title" data-en="Projects" data-es="Proyectos">Projects</h2>
+      </div>
+    </div>
+
+    <div class="proj-grid">
+
+      <!-- GHUNTER -->
+      <a href="ghunter.html"
+         class="proj rv">
+        <div class="proj-img">
+          <div class="proj-img-inner g-ghunter">
+            <img src="Image/GHUNTER/GHUNTER_Intro.png" alt="GHUNTER" style="width:100%;height:100%;object-fit:cover;object-position:center 78%;opacity:.9;">
+          </div>
+          <div class="proj-fade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span class="badge b-design" data-en="Game Designer" data-es="Game Designer">Game Designer</span>
+            <span class="badge b-award">BIG 2024 Winner</span>
+            <span class="badge b-steam">Steam</span>
+          </div>
+          <h3 class="proj-title">GHUNTER</h3>
+          <p class="proj-desc"
+             data-en="Third-person shooter where a gnome hunts and cooks prey alive. Designed upgrade systems, progression loops, and a CSV database of 216 unique in-game elements across 6 missions."
+             data-es="TPS donde un gnomo caza y cocina presas vivas. Diseñé sistemas de mejora, bucles de progresión y una base de datos CSV con 216 elementos en 6 misiones.">
+            Third-person shooter where a gnome hunts and cooks prey alive. Designed upgrade systems, progression loops, and a CSV database of 216 unique in-game elements across 6 missions.
+          </p>
+          <div class="proj-foot">
+            <span class="proj-co">Tiny Tavern · 2024–2025</span>
+            <div class="proj-arrow">
+              <svg viewBox="0 0 16 16" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- RUNEOMICON -->
+      <a href="runeomicon.html"
+         class="proj rv d1">
+        <div class="proj-img">
+          <div class="proj-img-inner g-runeomicon">
+            <img src="Image/Runeomicon/Runeomicon_Header.jpg" alt="Runeomicon" style="width:100%;height:100%;object-fit:cover;object-position:center center;opacity:.9;">
+          </div>
+          <div class="proj-fade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span class="badge b-design" data-en="Game Designer" data-es="Game Designer">Game Designer</span>
+          </div>
+          <h3 class="proj-title">Runeomicon</h3>
+          <p class="proj-desc"
+             data-en="Published title on Steam. A mystical experience with deep mechanical and rune-based systems design."
+             data-es="Título publicado en Steam. Una experiencia mística con diseño profundo de sistemas basados en runas.">
+            Published title on Steam. A mystical experience with deep mechanical and rune-based systems design.
+          </p>
+          <div class="proj-foot">
+            <span class="proj-co">TLR Games · 2024</span>
+            <div class="proj-arrow">
+              <svg viewBox="0 0 16 16" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- ANTRO -->
+      <a href="antro.html"
+         class="proj rv d2">
+        <div class="proj-img">
+          <div class="proj-img-inner g-antro">
+            <img src="Image/Antro/Antro Header.jpg" alt="Antro" style="width:100%;height:100%;object-fit:cover;object-position:center center;opacity:.9;">
+          </div>
+          <div class="proj-fade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span class="badge b-produce" data-en="Associate Producer" data-es="Productor Asociado">Associate Producer</span>
+          </div>
+          <h3 class="proj-title">Antro</h3>
+          <p class="proj-desc"
+             data-en="Rhythm puzzle platformer published by Selecta Digital. Managed 10+ person team through final production, led external QA and milestone delivery."
+             data-es="Plataformas de puzzles rítmicos publicado por Selecta Digital. Gestioné un equipo de más de 10 personas en la fase final, liderando QA externo y entrega de milestones.">
+            Rhythm puzzle platformer published by Selecta Digital. Managed 10+ person team through final production, led external QA and milestone delivery.
+          </p>
+          <div class="proj-foot">
+            <span class="proj-co">Gatera Studio · 2023–2024</span>
+            <div class="proj-arrow">
+              <svg viewBox="0 0 16 16" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- INSPIRATION IV -->
+      <a href="inspiration-iv.html"
+         class="proj rv d3">
+        <div class="proj-img">
+          <div class="proj-img-inner g-inspiration">
+            <img src="Image/InspirationIV/InspirationIV_Visuals.png" alt="Inspiration IV" style="width:100%;height:100%;object-fit:cover;object-position:center center;opacity:.9;">
+          </div>
+          <div class="proj-fade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span class="badge b-design" data-en="Game Designer" data-es="Game Designer">Game Designer</span>
+          </div>
+          <h3 class="proj-title">Inspiration IV</h3>
+          <p class="proj-desc"
+             data-en="Adventure-simulation set on Europa, Jupiter's moon. Led full level design and blockouts in Unreal Engine, environment-based puzzles, and player onboarding."
+             data-es="Aventura-simulación ambientada en Europa, luna de Júpiter. Lideré el diseño completo de niveles en Unreal Engine, puzzles de entorno y tutorial de jugador.">
+            Adventure-simulation set on Europa, Jupiter's moon. Led full level design and blockouts in Unreal Engine, environment-based puzzles, and player onboarding.
+          </p>
+          <div class="proj-foot">
+            <span class="proj-co">Inspiration IV · 2021–2022</span>
+            <div class="proj-arrow">
+              <svg viewBox="0 0 16 16" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OTHER PROJECTS ═══ -->
+<section id="other-projects">
+  <div class="container">
+    <div class="proj-header rv">
+      <div>
+        <div class="sec-label" data-en="More Work" data-es="Más Trabajo">More Work</div>
+        <h2 class="sec-title" data-en="Other Projects" data-es="Otros Proyectos">Other Projects</h2>
+      </div>
+    </div>
+    <div class="sp-grid">
+
+      <!-- PLATY -->
+      <div class="sp-card rv">
+        <div class="sp-card-badges">
+          <span class="badge b-design">Game Designer</span>
+          <span class="badge b-produce">Producer</span>
+        </div>
+        <div class="sp-card-title">Platy</div>
+        <div class="sp-card-meta">
+          <span>Garuna Studio</span>
+          <span>Oct 2022 – Jun 2023 · 9 months</span>
+        </div>
+        <p class="sp-card-desc">Puzzle-adventure vertical slice where a magical platypus saves his forest. University project, 6-person team.</p>
+        <ul class="sp-list">
+          <li>Full mechanics, level & narrative design</li>
+          <li>Gantt charts, task tracking & sprint planning</li>
+          <li>Conflict resolution & external presentations</li>
+        </ul>
+      </div>
+
+      <!-- NOTION AEVI -->
+      <div class="sp-card rv d1">
+        <div class="sp-card-badges">
+          <span class="badge b-template">Notion Template</span>
+        </div>
+        <div class="sp-card-title">Notion Template for AEVI</div>
+        <div class="sp-card-meta">
+          <span>Gatera Studio</span>
+          <span>Oct 2023 · 2 weeks</span>
+        </div>
+        <p class="sp-card-desc">Accessibility template for developers based on the AEVI Accessibility White Paper, adapted into a studio-ready Notion workspace.</p>
+        <ul class="sp-list">
+          <li>Researched & structured the AEVI white paper</li>
+          <li>Adapted content into developer-friendly format</li>
+          <li>Built complete Notion template for studio use</li>
+        </ul>
+      </div>
+
+      <!-- ROOTING FOR YOUR PAST -->
+      <div class="sp-card rv d2">
+        <div class="sp-card-badges">
+          <span class="badge b-design">Game Designer</span>
+          <span class="badge b-jam">Game Jam</span>
+        </div>
+        <div class="sp-card-title">Rooting for Your Past</div>
+        <div class="sp-card-meta">
+          <span>Global Game Jam 2023 · 3 days</span>
+          <span class="sp-award">🏆 Best Original Idea</span>
+        </div>
+        <p class="sp-card-desc">Family-tree generator game where selecting grandparents' facial features procedurally generates descendant characters. Theme: "Roots."</p>
+        <ul class="sp-list">
+          <li>Conceived core idea from the jam theme</li>
+          <li>Designed mechanics & gameplay loop</li>
+          <li>Calculated all possible character variations</li>
+        </ul>
+      </div>
+
+      <!-- PRAY FOR THE OLD ONES -->
+      <div class="sp-card rv">
+        <div class="sp-card-badges">
+          <span class="badge b-design">Game Designer</span>
+          <span class="badge b-board">Board Game</span>
+        </div>
+        <div class="sp-card-title">Pray for the Old Ones</div>
+        <div class="sp-card-meta">
+          <span>2-person project</span>
+          <span>Mar – Nov 2021 · 9 months</span>
+        </div>
+        <p class="sp-card-desc">PvP adventure board game set in the H.P. Lovecraft mythos. Players gather sacrifices using cards & dice to grow stronger and defeat enemies.</p>
+        <ul class="sp-list">
+          <li>Designed core concept, mechanics & map</li>
+          <li>Designed cards, characters & enemies</li>
+          <li>Playtesting & iterative feedback loops</li>
+        </ul>
+      </div>
+
+      <!-- MOVING OUT BOARD GAME -->
+      <div class="sp-card rv d1">
+        <div class="sp-card-badges">
+          <span class="badge b-design">Game Designer</span>
+          <span class="badge b-board">Board Game</span>
+        </div>
+        <div class="sp-card-title">Moving Out (Board Game)</div>
+        <div class="sp-card-meta">
+          <span>University Project · 5-person team</span>
+          <span>Nov 2023 · 1 month</span>
+        </div>
+        <p class="sp-card-desc">Adaptation of the videogame Moving Out into a commercial board game. Cooperative simultaneous card play — move furniture out before your rival.</p>
+        <ul class="sp-list">
+          <li>Designed core concept, mechanics & turn order</li>
+          <li>Designed card layout & in-game events</li>
+          <li>Playtesting & iterative improvement</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EXPERIENCE ═══ -->
+<section id="experience">
+  <div class="container">
+    <div class="exp-layout">
+      <div class="exp-sticky rv">
+        <div class="sec-label" data-en="Career" data-es="Carrera">Career</div>
+        <h2 class="sec-title" data-en="Work Experience" data-es="Experiencia Laboral">Work Experience</h2>
+        <p class="sec-desc"
+           data-en="5+ years across design, production, and QA roles in the games industry."
+           data-es="Más de 5 años en diseño, producción y QA en la industria del videojuego.">
+          5+ years across design, production, and QA roles in the games industry.
+        </p>
+      </div>
+
+      <div class="timeline">
+
+        <div class="tl-item rv">
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-period">Feb 2024 – Jan 2025</div>
+            <div class="tl-role" data-en="Junior Game Designer" data-es="Junior Game Designer">Junior Game Designer</div>
+            <div class="tl-company">Tiny Tavern · Madrid</div>
+            <div class="tl-game">Ghunter</div>
+            <ul class="tl-bullets">
+              <li data-en="Designed upgrade systems, secondary missions, and full player progression loop" data-es="Diseñé sistemas de mejora, misiones secundarias y el bucle completo de progresión">Designed upgrade systems, secondary missions, and full player progression loop</li>
+              <li data-en="Built CSV database managing 216 unique in-game elements across 6 missions" data-es="Construí base de datos CSV con 216 elementos únicos en 6 misiones">Built CSV database managing 216 unique in-game elements across 6 missions</li>
+              <li data-en="Defined weapon unlock system and authored player tutorial" data-es="Definí el sistema de desbloqueo de armas y creé el tutorial del jugador">Defined weapon unlock system and authored player tutorial</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item rv d1">
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-period">Sep 2023 – Jan 2024</div>
+            <div class="tl-role" data-en="Associate Producer" data-es="Productor Asociado">Associate Producer</div>
+            <div class="tl-company">Gatera Studio · Madrid</div>
+            <div class="tl-game" data-en="Antro — Published by Selecta Digital" data-es="Antro — Publicado por Selecta Digital">Antro — Published by Selecta Digital</div>
+            <ul class="tl-bullets">
+              <li data-en="Led 10+ person multidisciplinary team through final production phase" data-es="Lideré equipo multidisciplinar de +10 personas en la fase final de producción">Led 10+ person multidisciplinary team through final production phase</li>
+              <li data-en="Led external QA coordination and bug tracking to resolve critical issues pre-release" data-es="Lideré la coordinación de QA externo y tracking de bugs para resolver problemas críticos">Led external QA coordination and bug tracking to resolve critical issues pre-release</li>
+              <li data-en="Organized production hubs in Notion and Miro; aligned team on sprint milestones" data-es="Organicé hubs de producción en Notion y Miro; alineé al equipo en milestones de sprint">Organized production hubs in Notion and Miro; aligned team on sprint milestones</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item rv d2">
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-period">Jul 2023 – Sep 2023</div>
+            <div class="tl-role" data-en="Game Designer (Internship)" data-es="Game Designer (Prácticas)">Game Designer (Internship)</div>
+            <div class="tl-company">TLR Games</div>
+            <div class="tl-game">Ritual</div>
+            <ul class="tl-bullets">
+              <li data-en="Economy balancing via Machinations for tower defense scoring systems" data-es="Balanceo de economía mediante Machinations para sistemas de puntuación tower defense">Economy balancing via Machinations for tower defense scoring systems</li>
+              <li data-en="Authored complete GDD and design wikis in Notion" data-es="Redacté GDD completo y wikis de diseño en Notion">Authored complete GDD and design wikis in Notion</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item rv d3">
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-period">Sep 2022 – Jun 2023</div>
+            <div class="tl-role" data-en="Junior Game Designer &amp; Producer" data-es="Junior Game Designer y Producer">Junior Game Designer &amp; Producer</div>
+            <div class="tl-company">Garuna Studio</div>
+            <div class="tl-game">Platy</div>
+            <ul class="tl-bullets">
+              <li data-en="Led level design and mechanic implementation as primary designer on 6-person team" data-es="Lideré diseño de niveles e implementación de mecánicas como diseñador principal en equipo de 6">Led level design and mechanic implementation as primary designer on 6-person team</li>
+              <li data-en="Managed sprint planning and production documentation" data-es="Gestioné sprint planning y documentación de producción">Managed sprint planning and production documentation</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item rv d4">
+          <div class="tl-spine"><div class="tl-dot"></div></div>
+          <div class="tl-body">
+            <div class="tl-period">Oct 2021 – Jun 2022</div>
+            <div class="tl-role" data-en="Junior Game Designer" data-es="Junior Game Designer">Junior Game Designer</div>
+            <div class="tl-company">Inspiration IV</div>
+            <div class="tl-game">Inspiration IV</div>
+            <ul class="tl-bullets">
+              <li data-en="Full level design and blockouts in Unreal Engine; environmental storytelling" data-es="Diseño de niveles completo y blockouts en Unreal Engine; narrativa ambiental">Full level design and blockouts in Unreal Engine; environmental storytelling</li>
+              <li data-en="Designed tutorial and environment-based puzzle systems" data-es="Diseñé tutorial y sistemas de puzzles basados en el entorno">Designed tutorial and environment-based puzzle systems</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ACHIEVEMENTS ═══ -->
+<section id="achievements">
+  <div class="container">
+    <div class="ach-header rv">
+      <div class="sec-label" data-en="Recognition" data-es="Reconocimientos">Recognition</div>
+      <h2 class="sec-title" data-en="Achievements" data-es="Logros">Achievements</h2>
+    </div>
+    <div class="ach-grid">
+
+      <div class="ach-card rv">
+        <div class="ach-icon">
+          <svg viewBox="0 0 24 24"><path d="M8 21h8m-4-4v4M5 7H3a2 2 0 00-2 2v1a4 4 0 004 4h.5M19 7h2a2 2 0 012 2v1a4 4 0 01-4 4h-.5"/><path d="M5 3h14v8a7 7 0 01-14 0V3z"/></svg>
+        </div>
+        <div class="ach-year">2024</div>
+        <div class="ach-title" data-en="Best Student Game — BIG Conference" data-es="Mejor Juego Estudiantil — BIG Conference">Best Student Game — BIG Conference</div>
+        <p class="ach-desc"
+           data-en="Awarded to Ghunter at BIG Conference 2024 in Bilbao, where I served as the primary Systems and Progression Designer."
+           data-es="Otorgado a Ghunter en BIG Conference 2024 en Bilbao, donde fui el diseñador principal de sistemas y progresión.">
+          Awarded to Ghunter at BIG Conference 2024 in Bilbao, where I served as the primary Systems and Progression Designer.
+        </p>
+      </div>
+
+      <div class="ach-card rv d1">
+        <div class="ach-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+        </div>
+        <div class="ach-year">2023</div>
+        <div class="ach-title" data-en="Accessibility Expert — AEVI" data-es="Experto en Accesibilidad — AEVI">Accessibility Expert — AEVI</div>
+        <p class="ach-desc"
+           data-en="Developed the official accessibility template for the Spanish Video Game Association (AEVI) based on the White Paper on Accessibility for Developers."
+           data-es="Desarrollé la plantilla oficial de accesibilidad para la AEVI basada en el Libro Blanco de Accesibilidad para Desarrolladores.">
+          Developed the official accessibility template for the Spanish Video Game Association (AEVI) based on the White Paper on Accessibility for Developers.
+        </p>
+      </div>
+
+      <div class="ach-card rv d2">
+        <div class="ach-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="ach-year">2022 &amp; 2023</div>
+        <div class="ach-title" data-en="Innovation Award — Global Game Jam" data-es="Premio a la Innovación — Global Game Jam">Innovation Award — Global Game Jam</div>
+        <p class="ach-desc"
+           data-en="Twice winner of Best Original Idea: 2D/3D dimension-switching mechanic (2022) and procedural character generation (2023)."
+           data-es="Dos veces ganador del Mejor Idea Original: mecánica de cambio 2D/3D (2022) y generación procedural de personajes (2023).">
+          Twice winner of Best Original Idea: 2D/3D dimension-switching mechanic (2022) and procedural character generation (2023).
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EDUCATION ═══ -->
+<section id="education">
+  <div class="container">
+    <div class="rv">
+      <div class="sec-label" data-en="Education" data-es="Formación">Education</div>
+      <h2 class="sec-title" data-en="Academic Background" data-es="Formación Académica">Academic Background</h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card rv d1">
+        <div class="edu-type" data-en="Master's Degree" data-es="Máster">Master's Degree</div>
+        <div class="edu-degree" data-en="Game Design" data-es="Diseño de Videojuegos">Game Design</div>
+        <div class="edu-inst">U-tad · Madrid</div>
+        <div class="edu-period">Oct 2023 – Oct 2024</div>
+      </div>
+      <div class="edu-card rv d2">
+        <div class="edu-type" data-en="Bachelor's Degree" data-es="Grado Universitario">Bachelor's Degree</div>
+        <div class="edu-degree" data-en="Game Design &amp; Development" data-es="Diseño y Desarrollo de Videojuegos">Game Design &amp; Development</div>
+        <div class="edu-inst">Creanavarra</div>
+        <div class="edu-period">Sep 2020 – Jun 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="rv">
+        <div class="sec-label" data-en="About Me" data-es="Sobre mí">About Me</div>
+        <h2 class="sec-title" data-en="Games are more fun when the systems make sense" data-es="Los juegos son más divertidos cuando los sistemas tienen sentido">Games are more fun when the systems make sense</h2>
+        <div class="about-text">
+          <p data-en="I'm a Game Designer &amp; Producer focused on systems design, economy balancing, and player progression. The parts of a game that make it feel right, even when players can't explain why." data-es="Soy Game Designer y Producer especializado en diseño de sistemas, balanceo de economía y progresión. Las partes de un juego que lo hacen sentir bien, aunque los jugadores no sepan explicar por qué.">
+            I'm a Game Designer &amp; Producer focused on systems design, economy balancing, and player progression. The parts of a game that make it feel right, even when players can't explain why.
+          </p>
+          <p data-en="I've won <strong>Best Student Game at BIG Conference 2024</strong> with Ghunter and shipped Antro with Selecta Digital. I like knowing why something works, not just that it does." data-es="He ganado el <strong>Mejor Juego Estudiantil en BIG Conference 2024</strong> con Ghunter y publicado Antro con Selecta Digital. Me gusta entender por qué algo funciona, no solo que funcione.">
+            I've won <strong>Best Student Game at BIG Conference 2024</strong> with Ghunter and shipped Antro with Selecta Digital. I like knowing why something works, not just that it does.
+          </p>
+          <p data-en="<strong>Willing to relocate worldwide.</strong>" data-es="<strong>Disponible para reubicación mundial.</strong>">
+            <strong>Willing to relocate worldwide.</strong>
+          </p>
+        </div>
+      </div>
+      <div class="skill-groups rv d2">
+        <div>
+          <div class="sg-title" data-en="Design" data-es="Diseño">Design</div>
+          <div class="tags">
+            <span class="tag">Systems Design</span>
+            <span class="tag">Mechanics Design</span>
+            <span class="tag">Level Design</span>
+            <span class="tag">Puzzle Design</span>
+            <span class="tag">Economy Balancing</span>
+            <span class="tag">GDD Writing</span>
+          </div>
+        </div>
+        <div>
+          <div class="sg-title" data-en="Technical" data-es="Técnico">Technical</div>
+          <div class="tags">
+            <span class="tag">Unreal Engine</span>
+            <span class="tag">Unity</span>
+            <span class="tag">Machinations</span>
+            <span class="tag">Maya</span>
+            <span class="tag">CSV Implementation</span>
+            <span class="tag">Blockout</span>
+          </div>
+        </div>
+        <div>
+          <div class="sg-title" data-en="Production" data-es="Producción">Production</div>
+          <div class="tags">
+            <span class="tag">Agile / Scrum</span>
+            <span class="tag">Sprint Planning</span>
+            <span class="tag">Notion</span>
+            <span class="tag">Jira</span>
+            <span class="tag">Miro</span>
+            <span class="tag">QA Coordination</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner rv">
+      <div class="sec-label" data-en="Let's Talk" data-es="Hablemos">Let's Talk</div>
+      <h2 class="contact-title">
+        <span data-en="Open to new" data-es="Abierto a nuevas">Open to new</span><br>
+        <span class="hi" data-en="opportunities" data-es="oportunidades">opportunities</span>
+      </h2>
+      <p class="contact-desc"
+         data-en="Looking for a Game Designer or Producer who ships and sweats the details? Let's talk about your project and what we can build together."
+         data-es="¿Buscas un Game Designer o Producer que entregue resultados y cuide los detalles? Hablemos sobre tu proyecto y lo que podemos crear juntos.">
+        Looking for a Game Designer or Producer who ships and sweats the details? Let's talk about your project and what we can build together.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:pablorodriguezp3@gmail.com" class="c-link">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+          pablorodriguezp3@gmail.com
+        </a>
+        <a href="https://linkedin.com/in/pablo-rodriguez-pz" target="_blank" rel="noopener" class="c-link">
+          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2" fill="currentColor" stroke="none"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="foot-inner">
+      <p class="foot-txt" data-en="© 2025 Pablo Rodriguez" data-es="© 2025 Pablo Rodriguez">© 2025 Pablo Rodriguez</p>
+      <p class="foot-txt" data-en="Made with <em>♥</em>" data-es="Hecho con <em>♥</em>">Made with <em>♥</em></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ── NAV scroll ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  /* ── Hamburger ── */
+  const burger = document.getElementById('hamburger');
+  const links  = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+  });
+  links.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+    })
+  );
+
+  /* ── Typewriter ── */
+  const ROLES = {
+    en: ['Game Designer', 'Systems Designer', 'Game Producer', 'Level Designer'],
+    es: ['Diseñador de Juegos', 'Diseñador de Sistemas', 'Game Producer', 'Level Designer']
+  };
+  let lang = 'en', ri = 0, ci = 0, del = false;
+  const roleEl = document.getElementById('hero-role');
+  const CURSOR = '<span class="cursor-blink"></span>';
+
+  function type() {
+    const word = ROLES[lang][ri];
+    if (!del) {
+      roleEl.innerHTML = word.slice(0, ++ci) + CURSOR;
+      if (ci === word.length) { del = true; return setTimeout(type, 2200); }
+    } else {
+      roleEl.innerHTML = word.slice(0, --ci) + CURSOR;
+      if (ci === 0) { del = false; ri = (ri + 1) % ROLES[lang].length; }
+    }
+    setTimeout(type, del ? 55 : 95);
+  }
+  setTimeout(type, 1400);
+
+  /* ── Language toggle ── */
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      lang = btn.dataset.lang;
+      document.querySelectorAll('.lang-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.lang === lang)
+      );
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-en]').forEach(el => {
+        const val = el.getAttribute('data-' + lang);
+        if (val !== null) el.innerHTML = val;
+      });
+      /* reset typewriter */
+      ri = 0; ci = 0; del = false;
+    });
+  });
+
+  /* ── Scroll reveal ── */
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+  document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+
+  /* ── Smooth scroll (offset for nav) ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (!t) return;
+      e.preventDefault();
+      window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 76, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
