@@ -561,10 +561,10 @@
       <div class="cs-label" data-en="Overview" data-es="Resumen">Overview</div>
       <h2 class="cs-title" data-en="What is GHUNTER?" data-es="¿Qué es GHUNTER?">What is GHUNTER?</h2>
       <div class="cs-body">
-        <p>
+        <p data-en="GHUNTER is a <strong>third-person twin-stick shooter</strong> built around the fantasy of being a gnome chef who hunts his ingredients live. The core loop has the player exploring a handcrafted world, dispatching enemies using elemental weapons, and turning their kills into increasingly exotic dishes, all to satisfy a growing roster of clients and climb toward the title of <strong>Royal Chef</strong>." data-es="GHUNTER es un <strong>shooter en tercera persona twin-stick</strong> construido alrededor de la fantasía de ser un chef gnomo que caza sus ingredientes en vivo. El bucle principal lleva al jugador a explorar un mundo artesanal, eliminar enemigos con armas elementales y convertir sus presas en platos cada vez más exóticos, todo para satisfacer a una lista creciente de clientes y alcanzar el título de <strong>Royal Chef</strong>.">
           GHUNTER is a <strong>third-person twin-stick shooter</strong> built around the fantasy of being a gnome chef who hunts his ingredients live. The core loop has the player exploring a handcrafted world, dispatching enemies using elemental weapons, and turning their kills into increasingly exotic dishes, all to satisfy a growing roster of clients and climb toward the title of <strong>Royal Chef</strong>.
         </p>
-        <p>
+        <p data-en="The game earned <strong>Best Student Game at BIG Conference 2024</strong>, the most prestigious student game award in Spain, competing against titles from the country's top game design schools." data-es="El juego ganó el <strong>Mejor Juego Estudiantil en BIG Conference 2024</strong>, el premio estudiantil más prestigioso de España, compitiendo contra títulos de las principales escuelas de diseño de videojuegos del país.">
           The game earned <strong>Best Student Game at BIG Conference 2024</strong>, the most prestigious student game award in Spain, competing against titles from the country's top game design schools.
         </p>
       </div>
@@ -622,19 +622,19 @@
             <svg class="contrib-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="contrib-body">
-            <p class="contrib-lead">
+            <p class="contrib-lead" data-en="The central design challenge was making combat feel like <strong>cooking</strong>. I designed a three-variable system where every enemy kill produces a unique dish based on how you fight — creating <strong>216 distinct plate outcomes</strong> from a compact ruleset." data-es="El reto central de diseño era hacer que el combate se sintiera como <strong>cocinar</strong>. Diseñé un sistema de tres variables donde cada kill produce un plato único según cómo combates, generando <strong>216 resultados de plato distintos</strong> a partir de un conjunto de reglas compacto.">
               The central design challenge was making combat feel like <strong>cooking</strong>. I designed a three-variable system where every enemy kill produces a unique dish based on how you fight — creating <strong>216 distinct plate outcomes</strong> from a compact ruleset.
             </p>
             <div class="callout">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-              <div class="callout-text">
+              <div class="callout-text" data-en="<strong>The system:</strong> Each enemy has a health gauge you fill with a chosen weapon (defines cooking method). You then apply an optional ingredient (flavour modifier), and finish with a melee hit (defines the cut type). Three enemies × three weapons × three cuts = <strong>27 plate sprites per enemy type × 8 enemy types = 216 total unique dish combinations</strong>, all emergent from three simple decisions." data-es="<strong>El sistema:</strong> Cada enemigo tiene una barra de vida que rellenas con un arma elegida (define el método de cocción). Luego aplicas un ingrediente opcional (modificador de sabor) y terminas con un golpe cuerpo a cuerpo (define el tipo de corte). Tres enemigos × tres armas × tres cortes = <strong>27 sprites de plato por tipo de enemigo × 8 tipos de enemigo = 216 combinaciones únicas</strong>, todas emergentes de tres decisiones simples.">
                 <strong>The system:</strong> Each enemy has a health gauge you fill with a chosen weapon (defines cooking method). You then apply an optional ingredient (flavour modifier), and finish with a melee hit (defines the cut type). Three enemies × three weapons × three cuts = <strong>27 plate sprites per enemy type × 8 enemy types = 216 total unique dish combinations</strong>, all emergent from three simple decisions.
               </div>
             </div>
             <ul class="point-list">
-              <li>Designed the health gauge flow so that each phase (weapon, ingredient, melee) feels distinct and teaches a different combat behavior</li>
-              <li>Balanced the relative "rarity" of ingredients so that rare combinations reward exploration without blocking main progress</li>
-              <li>Ensured all 216 combinations had a valid dish sprite outcome, working with the art team to define the visual grammar for each variable</li>
+              <li data-en="Designed the health gauge flow so that each phase (weapon, ingredient, melee) feels distinct and teaches a different combat behavior" data-es="Diseñé el flujo de la barra de vida para que cada fase (arma, ingrediente, cuerpo a cuerpo) se sienta distinta y enseñe un comportamiento de combate diferente">Designed the health gauge flow so that each phase (weapon, ingredient, melee) feels distinct and teaches a different combat behavior</li>
+              <li data-en='Balanced the relative "rarity" of ingredients so that rare combinations reward exploration without blocking main progress' data-es='Balanceé la "rareza" relativa de los ingredientes para que las combinaciones raras recompensen la exploración sin bloquear el progreso principal'>Balanced the relative "rarity" of ingredients so that rare combinations reward exploration without blocking main progress</li>
+              <li data-en="Ensured all 216 combinations had a valid dish sprite outcome, working with the art team to define the visual grammar for each variable" data-es="Me aseguré de que las 216 combinaciones tuvieran un sprite de plato válido, trabajando con el equipo de arte para definir la gramática visual de cada variable">Ensured all 216 combinations had a valid dish sprite outcome, working with the art team to define the visual grammar for each variable</li>
             </ul>
           </div>
         </div>
@@ -653,14 +653,14 @@
             <svg class="contrib-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="contrib-body">
-            <p class="contrib-lead">
+            <p class="contrib-lead" data-en="To manage the complexity of 216 dish variants across 6 missions, I built a <strong>data-driven implementation pipeline</strong> that let designers update content without touching Unreal Engine code." data-es="Para gestionar la complejidad de 216 variantes de plato en 6 misiones, construí un <strong>pipeline de implementación data-driven</strong> que permitía a los diseñadores actualizar contenido sin tocar el código de Unreal Engine.">
               To manage the complexity of 216 dish variants across 6 missions, I built a <strong>data-driven implementation pipeline</strong> that let designers update content without touching Unreal Engine code.
             </p>
             <ul class="point-list">
-              <li><strong>Authored full design documentation</strong> and spreadsheets covering all plate variants, unlock conditions, and mission requirements before a single line was imported</li>
-              <li><strong>Built and maintained a CSV database</strong> directly imported into Unreal, keeping primary and secondary mission data synchronized in real-time across the team</li>
-              <li><strong>Designed the star-rating difficulty system</strong> that evaluates plates across 3 tiers, driving the secondary mission reward loop</li>
-              <li><strong>Defined all upgrade unlock thresholds</strong> — how many stars of each tier a player needs to unlock upgrades through NPC secondary missions</li>
+              <li data-en="<strong>Authored full design documentation</strong> and spreadsheets covering all plate variants, unlock conditions, and mission requirements before a single line was imported" data-es="<strong>Redacté la documentación de diseño completa</strong> y hojas de cálculo con todas las variantes de plato, condiciones de desbloqueo y requisitos de misión antes de importar ninguna línea"><strong>Authored full design documentation</strong> and spreadsheets covering all plate variants, unlock conditions, and mission requirements before a single line was imported</li>
+              <li data-en="<strong>Built and maintained a CSV database</strong> directly imported into Unreal, keeping primary and secondary mission data synchronized in real-time across the team" data-es="<strong>Construí y mantuve una base de datos CSV</strong> importada directamente en Unreal, manteniendo los datos de misiones primarias y secundarias sincronizados en tiempo real"><strong>Built and maintained a CSV database</strong> directly imported into Unreal, keeping primary and secondary mission data synchronized in real-time across the team</li>
+              <li data-en="<strong>Designed the star-rating difficulty system</strong> that evaluates plates across 3 tiers, driving the secondary mission reward loop" data-es="<strong>Diseñé el sistema de dificultad por estrellas</strong> que evalúa los platos en 3 niveles, impulsando el bucle de recompensas de misiones secundarias"><strong>Designed the star-rating difficulty system</strong> that evaluates plates across 3 tiers, driving the secondary mission reward loop</li>
+              <li data-en="<strong>Defined all upgrade unlock thresholds</strong> — how many stars of each tier a player needs to unlock upgrades through NPC secondary missions" data-es="<strong>Definí todos los umbrales de desbloqueo de mejoras</strong>: cuántas estrellas de cada nivel necesita el jugador para desbloquear mejoras a través de las misiones secundarias de NPC"><strong>Defined all upgrade unlock thresholds</strong> — how many stars of each tier a player needs to unlock upgrades through NPC secondary missions</li>
             </ul>
           </div>
         </div>
@@ -679,15 +679,15 @@
             <svg class="contrib-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="contrib-body">
-            <p class="contrib-lead">
+            <p class="contrib-lead" data-en="I owned the complete <strong>player progression arc</strong> from first session to final boss, defining what the player has, what they want next, and how every new tool changes how they interact with the world." data-es="Fui responsable del <strong>arco de progresión del jugador</strong> completo, desde la primera sesión hasta el jefe final, definiendo qué tiene el jugador, qué quiere a continuación y cómo cada nueva herramienta cambia su forma de interactuar con el mundo.">
               I owned the complete <strong>player progression arc</strong> from first session to final boss, defining what the player has, what they want next, and how every new tool changes how they interact with the world.
             </p>
             <ul class="point-list">
-              <li><strong>Defined the required plates for each of the 6 main missions</strong>, balancing difficulty and variety across the campaign</li>
-              <li><strong>Designed the full weapon unlock system</strong> — each weapon is introduced through a main mission gate, and I defined exactly how the player first encounters it, learns it, and integrates it into their repertoire</li>
-              <li><strong>Designed the upgrade system</strong> — specifying which NPC sells which upgrade, what plates unlock them, and how they interact with player build diversity</li>
-              <li><strong>Defined all map statues</strong> (collectible challenges) — which plates each requires, so they organically reward player mastery of specific mechanics</li>
-              <li><strong>Managed and balanced 10 secondary missions</strong>, tuning star requirements to maintain challenge curve without creating frustrating difficulty spikes</li>
+              <li data-en="<strong>Defined the required plates for each of the 6 main missions</strong>, balancing difficulty and variety across the campaign" data-es="<strong>Definí los platos requeridos para cada una de las 6 misiones principales</strong>, balanceando dificultad y variedad a lo largo de la campaña"><strong>Defined the required plates for each of the 6 main missions</strong>, balancing difficulty and variety across the campaign</li>
+              <li data-en="<strong>Designed the full weapon unlock system</strong> — each weapon is introduced through a main mission gate, and I defined exactly how the player first encounters it, learns it, and integrates it into their repertoire" data-es="<strong>Diseñé el sistema completo de desbloqueo de armas</strong>: cada arma se presenta a través de una misión principal, y definí exactamente cómo el jugador la encuentra, la aprende y la integra en su repertorio"><strong>Designed the full weapon unlock system</strong> — each weapon is introduced through a main mission gate, and I defined exactly how the player first encounters it, learns it, and integrates it into their repertoire</li>
+              <li data-en="<strong>Designed the upgrade system</strong> — specifying which NPC sells which upgrade, what plates unlock them, and how they interact with player build diversity" data-es="<strong>Diseñé el sistema de mejoras</strong>: especificando qué NPC vende qué mejora, qué platos las desbloquean y cómo interactúan con la diversidad de builds del jugador"><strong>Designed the upgrade system</strong> — specifying which NPC sells which upgrade, what plates unlock them, and how they interact with player build diversity</li>
+              <li data-en="<strong>Defined all map statues</strong> (collectible challenges) — which plates each requires, so they organically reward player mastery of specific mechanics" data-es="<strong>Definí todas las estatuas del mapa</strong> (desafíos coleccionables): qué platos requiere cada una, para que recompensen orgánicamente el dominio de mecánicas específicas"><strong>Defined all map statues</strong> (collectible challenges) — which plates each requires, so they organically reward player mastery of specific mechanics</li>
+              <li data-en="<strong>Managed and balanced 10 secondary missions</strong>, tuning star requirements to maintain challenge curve without creating frustrating difficulty spikes" data-es="<strong>Gestioné y balanceé 10 misiones secundarias</strong>, ajustando los requisitos de estrellas para mantener la curva de dificultad sin crear picos frustrantes"><strong>Managed and balanced 10 secondary missions</strong>, tuning star requirements to maintain challenge curve without creating frustrating difficulty spikes</li>
             </ul>
             <!-- IMAGE SLOT: Replace with progression chart / spreadsheet screenshot -->
             <div class="img-slot" style="margin-top:20px">
@@ -714,14 +714,14 @@
             <svg class="contrib-chevron" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>
           </div>
           <div class="contrib-body">
-            <p class="contrib-lead">
+            <p class="contrib-lead" data-en="With a multi-variable combat system, onboarding was critical. I designed and implemented the <strong>complete tutorial experience</strong>: the sequence in which mechanics are introduced, and the in-game video popups that demonstrate each one." data-es="Con un sistema de combate de múltiples variables, el onboarding era crítico. Diseñé e implementé la <strong>experiencia de tutorial completa</strong>: la secuencia en que se presentan las mecánicas y los popups de vídeo in-game que demuestran cada una.">
               With a multi-variable combat system, onboarding was critical. I designed and implemented the <strong>complete tutorial experience</strong>: the sequence in which mechanics are introduced, and the in-game video popups that demonstrate each one.
             </p>
             <ul class="point-list">
-              <li><strong>Defined the pedagogical sequence</strong>: what the player learns first, second, and third, ensuring each new mechanic builds on the last without overwhelming</li>
-              <li><strong>Designed the popup system</strong> that surfaces contextual tutorials exactly when the mechanic becomes relevant, not before</li>
-              <li><strong>Recorded and edited the in-game tutorial videos</strong> shown inside the popup system, writing, capturing, and cutting all video content used in production</li>
-              <li>Iterated on tutorial pacing based on playtesting feedback to reduce the drop-off rate in the first 10 minutes of play</li>
+              <li data-en="<strong>Defined the pedagogical sequence</strong>: what the player learns first, second, and third, ensuring each new mechanic builds on the last without overwhelming" data-es="<strong>Definí la secuencia pedagógica</strong>: qué aprende el jugador primero, segundo y tercero, asegurando que cada mecánica nueva se construya sobre la anterior sin saturar"><strong>Defined the pedagogical sequence</strong>: what the player learns first, second, and third, ensuring each new mechanic builds on the last without overwhelming</li>
+              <li data-en="<strong>Designed the popup system</strong> that surfaces contextual tutorials exactly when the mechanic becomes relevant, not before" data-es="<strong>Diseñé el sistema de popups</strong> que muestra tutoriales contextuales exactamente cuando la mecánica se vuelve relevante, no antes"><strong>Designed the popup system</strong> that surfaces contextual tutorials exactly when the mechanic becomes relevant, not before</li>
+              <li data-en="<strong>Recorded and edited the in-game tutorial videos</strong> shown inside the popup system, writing, capturing, and cutting all video content used in production" data-es="<strong>Grabé y edité los vídeos tutorial del juego</strong> mostrados dentro del sistema de popups, escribiendo, capturando y cortando todo el contenido de vídeo usado en producción"><strong>Recorded and edited the in-game tutorial videos</strong> shown inside the popup system, writing, capturing, and cutting all video content used in production</li>
+              <li data-en="Iterated on tutorial pacing based on playtesting feedback to reduce the drop-off rate in the first 10 minutes of play" data-es="Iteré sobre el ritmo del tutorial basándome en feedback de playtesting para reducir la tasa de abandono en los primeros 10 minutos de juego">Iterated on tutorial pacing based on playtesting feedback to reduce the drop-off rate in the first 10 minutes of play</li>
             </ul>
           </div>
         </div>
@@ -757,10 +757,10 @@
       <div class="cs-label" data-en="Outcome" data-es="Resultados">Outcome</div>
       <h2 class="cs-title" data-en="Results" data-es="Resultados">Results</h2>
       <div class="cs-body">
-        <p>
+        <p data-en="GHUNTER shipped on Steam in 2024 and was selected as the <strong>Best Student Game at BIG Conference 2024</strong> in Bilbao, the largest and most prestigious game conference in Spain, competing against student titles from the country's leading game design programmes." data-es="GHUNTER se lanzó en Steam en 2024 y fue seleccionado como el <strong>Mejor Juego Estudiantil en BIG Conference 2024</strong> en Bilbao, la conferencia de videojuegos más grande y prestigiosa de España, compitiendo contra títulos estudiantiles de los mejores programas de diseño del país.">
           GHUNTER shipped on Steam in 2024 and was selected as the <strong>Best Student Game at BIG Conference 2024</strong> in Bilbao, the largest and most prestigious game conference in Spain, competing against student titles from the country's leading game design programmes.
         </p>
-        <p>
+        <p data-en="The 216-plate system was highlighted by judges as a standout example of <strong>elegant systems design</strong>: maximum content variety generated from a small number of interlocking variables, with no two runs feeling identical. The CSV-driven data pipeline became a production reference for the team and kept mission content agile through the final months of development." data-es="El sistema de 216 platos fue destacado por el jurado como un ejemplo sobresaliente de <strong>diseño de sistemas elegante</strong>: máxima variedad de contenido generada a partir de un pequeño número de variables entrelazadas, sin que dos partidas se sientan idénticas. El pipeline de datos CSV se convirtió en referencia de producción del equipo y mantuvo el contenido de misiones ágil durante los últimos meses de desarrollo.">
           The 216-plate system was highlighted by judges as a standout example of <strong>elegant systems design</strong>: maximum content variety generated from a small number of interlocking variables, with no two runs feeling identical. The CSV-driven data pipeline became a production reference for the team and kept mission content agile through the final months of development.
         </p>
       </div>
