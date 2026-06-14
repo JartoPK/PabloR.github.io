@@ -446,8 +446,15 @@
       font-size: 13px; color: var(--t3);
       font-style: italic; margin-bottom: 12px;
     }
-    a.tl-game { color: var(--accent-lt); text-decoration: none; font-style: normal; font-weight: 600; transition: color .2s; }
-    a.tl-game:hover { color: var(--accent); text-decoration: underline; }
+    a.tl-item {
+      display: flex; gap: 22px;
+      padding: 16px; margin-bottom: 24px;
+      text-decoration: none; color: inherit;
+      border: 1px solid var(--bdr); border-radius: 14px;
+      transition: border-color .25s, background .25s, transform .2s;
+    }
+    a.tl-item:last-child { margin-bottom: 0; }
+    a.tl-item:hover { border-color: var(--accent-bdr); background: var(--accent-glow); transform: translateY(-2px); }
     .tl-bullets { list-style: none; display: flex; flex-direction: column; gap: 6px; }
     .tl-bullets li {
       font-size: 14px; color: var(--t2);
@@ -1070,35 +1077,35 @@
 
       <div class="timeline">
 
-        <div class="tl-item rv">
+        <a class="tl-item rv" href="ghunter.html">
           <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
           <div class="tl-body">
             <div class="tl-period">Feb 2024 – Jan 2025</div>
             <div class="tl-role" data-en="Junior Game Designer" data-es="Junior Game Designer">Junior Game Designer</div>
             <div class="tl-company">Tiny Tavern · Madrid</div>
-            <a class="tl-game" href="ghunter.html">Ghunter ↗</a>
+            <div class="tl-game">Ghunter</div>
             <ul class="tl-bullets">
               <li data-en="Designed upgrade systems, secondary missions, and full player progression loop" data-es="Diseñé sistemas de mejora, misiones secundarias y el bucle completo de progresión">Designed upgrade systems, secondary missions, and full player progression loop</li>
               <li data-en="Built CSV database managing 216 unique in-game elements across 6 missions" data-es="Construí base de datos CSV con 216 elementos únicos en 6 misiones">Built CSV database managing 216 unique in-game elements across 6 missions</li>
               <li data-en="Defined weapon unlock system and authored player tutorial" data-es="Definí el sistema de desbloqueo de armas y creé el tutorial del jugador">Defined weapon unlock system and authored player tutorial</li>
             </ul>
           </div>
-        </div>
+        </a>
 
-        <div class="tl-item rv d1">
+        <a class="tl-item rv d1" href="antro.html">
           <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
           <div class="tl-body">
             <div class="tl-period">Sep 2023 – Jan 2024</div>
             <div class="tl-role" data-en="Associate Producer" data-es="Productor Asociado">Associate Producer</div>
             <div class="tl-company">Gatera Studio · Madrid</div>
-            <a class="tl-game" href="antro.html" data-en="Antro — Published by Selecta Digital ↗" data-es="Antro — Publicado por Selecta Digital ↗">Antro — Published by Selecta Digital ↗</a>
+            <div class="tl-game" data-en="Antro — Published by Selecta Digital" data-es="Antro — Publicado por Selecta Digital">Antro — Published by Selecta Digital</div>
             <ul class="tl-bullets">
               <li data-en="Led 10+ person multidisciplinary team through final production phase" data-es="Lideré equipo multidisciplinar de +10 personas en la fase final de producción">Led 10+ person multidisciplinary team through final production phase</li>
               <li data-en="Led external QA coordination and bug tracking to resolve critical issues pre-release" data-es="Lideré la coordinación de QA externo y tracking de bugs para resolver problemas críticos">Led external QA coordination and bug tracking to resolve critical issues pre-release</li>
               <li data-en="Organized production hubs in Notion and Miro; aligned team on sprint milestones" data-es="Organicé hubs de producción en Notion y Miro; alineé al equipo en milestones de sprint">Organized production hubs in Notion and Miro; aligned team on sprint milestones</li>
             </ul>
           </div>
-        </div>
+        </a>
 
         <div class="tl-item rv d2">
           <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
@@ -1114,33 +1121,33 @@
           </div>
         </div>
 
-        <div class="tl-item rv d3">
+        <a class="tl-item rv d3" href="#projects">
           <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
           <div class="tl-body">
             <div class="tl-period">Sep 2022 – Jun 2023</div>
             <div class="tl-role" data-en="Junior Game Designer &amp; Producer" data-es="Junior Game Designer y Producer">Junior Game Designer &amp; Producer</div>
             <div class="tl-company">Garuna Studio</div>
-            <a class="tl-game" href="#projects">Platy ↗</a>
+            <div class="tl-game">Platy</div>
             <ul class="tl-bullets">
               <li data-en="Led level design and mechanic implementation as primary designer on 6-person team" data-es="Lideré diseño de niveles e implementación de mecánicas como diseñador principal en equipo de 6">Led level design and mechanic implementation as primary designer on 6-person team</li>
               <li data-en="Managed sprint planning and production documentation" data-es="Gestioné sprint planning y documentación de producción">Managed sprint planning and production documentation</li>
             </ul>
           </div>
-        </div>
+        </a>
 
-        <div class="tl-item rv d4">
+        <a class="tl-item rv d4" href="inspiration-iv.html">
           <div class="tl-spine"><div class="tl-dot"></div></div>
           <div class="tl-body">
             <div class="tl-period">Oct 2021 – Jun 2022</div>
             <div class="tl-role" data-en="Junior Game Designer" data-es="Junior Game Designer">Junior Game Designer</div>
             <div class="tl-company">Inspiration IV</div>
-            <a class="tl-game" href="inspiration-iv.html">Inspiration IV ↗</a>
+            <div class="tl-game">Inspiration IV</div>
             <ul class="tl-bullets">
               <li data-en="Full level design and blockouts in Unreal Engine; environmental storytelling" data-es="Diseño de niveles completo y blockouts en Unreal Engine; narrativa ambiental">Full level design and blockouts in Unreal Engine; environmental storytelling</li>
               <li data-en="Designed tutorial and environment-based puzzle systems" data-es="Diseñé tutorial y sistemas de puzzles basados en el entorno">Designed tutorial and environment-based puzzle systems</li>
             </ul>
           </div>
-        </div>
+        </a>
 
       </div>
     </div>
